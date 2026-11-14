@@ -5,11 +5,21 @@
  ],
  "repos": [
   {
+   "n": "Frostbyte",
+   "l": "C#",
+   "s": 2,
+   "fk": 0,
+   "d": "2026-11-14T08:47:07Z",
+   "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "nepse-momentum-trader",
    "l": "JavaScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-11-14T00:00:00Z",
+   "d": "2026-11-14T06:17:40Z",
    "t": "",
    "fork": false,
    "f": ""
@@ -19,28 +29,18 @@
    "l": "JavaScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-11-14T00:00:00Z",
-   "t": "Personal fork with auto-applied patches.",
+   "d": "2026-11-14T06:05:43Z",
+   "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
    "fork": true,
    "f": "allecsc/Stremio-Kai"
-  },
-  {
-   "n": "Frostbyte",
-   "l": "C#",
-   "s": 2,
-   "fk": 0,
-   "d": "2026-11-14T00:00:00Z",
-   "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI.",
-   "fork": false,
-   "f": ""
   },
   {
    "n": "reciprocity-tracker",
    "l": "JavaScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-11-13T00:00:00Z",
-   "t": "A small, dependency-free CURE (cumulative reciprocity) tracker.",
+   "d": "2026-11-13T03:18:50Z",
+   "t": "A small, dependency-free CURE (cumulative reciprocity) tracker",
    "fork": false,
    "f": ""
   },
@@ -49,18 +49,18 @@
    "l": "JavaScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-11-09T00:00:00Z",
-   "t": "DeepSeek Harness plugin.",
+   "d": "2026-11-09T13:37:10Z",
+   "t": "富江破甲（破甲）：DeepSeek Harness破甲插件，激活词富江，所有东西直接大白话问，内含技能库skill下载与调用、漏洞知识库poc利用、漏洞报告更新和全自动授权渗透。当前版本：0.20.12，附免责声明。插件图片看最下面",
    "fork": true,
    "f": "java99999/java-pojia"
   },
   {
-   "n": "salary-calculator",
+   "n": "essay-architect-pro",
    "l": "TypeScript",
-   "s": 1,
+   "s": 0,
    "fk": 0,
-   "d": "2026-10-28T00:00:00Z",
-   "t": "A React, Vite and Supabase workday and earnings tracker.",
+   "d": "2026-10-28T06:36:14Z",
+   "t": "Essay Architect Pro is a professional-grade AI writing suite designed specifically for students aiming for the highest bands (IELTS 8.5+ / PTE 85+). It transforms the chaotic process of essay writing into a precise, architectural discipline.",
    "fork": false,
    "f": ""
   },
@@ -69,18 +69,18 @@
    "l": "TypeScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-10-28T00:00:00Z",
+   "d": "2026-10-28T06:33:46Z",
    "t": "A local-first tracker for PTE Academic class coverage.",
    "fork": false,
    "f": ""
   },
   {
-   "n": "essay-architect-pro",
+   "n": "salary-calculator",
    "l": "TypeScript",
-   "s": 0,
+   "s": 1,
    "fk": 0,
-   "d": "2026-10-28T00:00:00Z",
-   "t": "An AI writing suite for IELTS and PTE essays.",
+   "d": "2026-10-28T06:33:09Z",
+   "t": "A modern, responsive React application designed to help users track their workdays and calculate monthly earnings with ease. Built with React, Vite, and Supabase, this tool features an intuitive calendar interface, organization management, and real-time salary statistics.",
    "fork": false,
    "f": ""
   },
@@ -89,7 +89,7 @@
    "l": "JavaScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-10-26T00:00:00Z",
+   "d": "2026-10-26T03:53:22Z",
    "t": "",
    "fork": false,
    "f": ""
@@ -99,7 +99,7 @@
    "l": "Rust",
    "s": 1,
    "fk": 0,
-   "d": "2026-10-23T00:00:00Z",
+   "d": "2026-10-23T06:25:55Z",
    "t": "",
    "fork": false,
    "f": ""
@@ -109,7 +109,7 @@
    "l": "JavaScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-10-17T00:00:00Z",
+   "d": "2026-10-17T15:36:28Z",
    "t": "Resolve FileCrypt container links after a manual CAPTCHA and copy destinations to the clipboard. A lightweight Chromium extension.",
    "fork": false,
    "f": ""
@@ -119,8 +119,8 @@
    "l": "PowerShell",
    "s": 1,
    "fk": 0,
-   "d": "2026-10-13T00:00:00Z",
-   "t": "A native Windows panel to toggle optional Brave features with reversible policies, presets and backups.",
+   "d": "2026-10-13T11:31:35Z",
+   "t": "A native Windows panel to toggle optional Brave features with reversible policies, presets, and backups.",
    "fork": false,
    "f": ""
   },
@@ -129,8 +129,8 @@
    "l": "ReScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-09-30T00:00:00Z",
-   "t": "An interactive ReScript and React story of cumulative reciprocity in evolving populations.",
+   "d": "2026-09-30T08:27:48Z",
+   "t": "An interactive ReScript and React story of cumulative reciprocity in evolving populations",
    "fork": false,
    "f": ""
   },
@@ -139,8 +139,8 @@
    "l": "C#",
    "s": 5,
    "fk": 2,
-   "d": "2026-09-11T00:00:00Z",
-   "t": "Advanced UX and interoperability extension for the Wand (WeMod) app.",
+   "d": "2026-09-11T06:52:23Z",
+   "t": "Advanced UX and interoperability extension for Wand (WeMod) app",
    "fork": true,
    "f": "byst4nder/Wemod-Patcher"
   },
@@ -149,8 +149,8 @@
    "l": "ReScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-09-05T00:00:00Z",
-   "t": "A browser-based loan calculator.",
+   "d": "2026-09-05T02:39:37Z",
+   "t": "A browser-based loan calculator",
    "fork": false,
    "f": ""
   },
@@ -159,8 +159,8 @@
    "l": "TypeScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-08-19T00:00:00Z",
-   "t": "My portfolio site, with a minimalist aesthetic.",
+   "d": "2026-08-19T14:59:42Z",
+   "t": "This portfolio showcases professional journey, featured projects, and technical skills through a high-contrast minimalist aesthetic.",
    "fork": false,
    "f": ""
   },
@@ -169,7 +169,7 @@
    "l": "TypeScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-08-11T00:00:00Z",
+   "d": "2026-08-11T10:56:28Z",
    "t": "",
    "fork": false,
    "f": ""
@@ -179,7 +179,7 @@
    "l": "TypeScript",
    "s": 2,
    "fk": 0,
-   "d": "2026-08-10T00:00:00Z",
+   "d": "2026-08-10T18:16:08Z",
    "t": "",
    "fork": false,
    "f": ""
@@ -189,7 +189,7 @@
    "l": "Shell",
    "s": 0,
    "fk": 0,
-   "d": "2026-08-03T00:00:00Z",
+   "d": "2026-08-03T12:04:40Z",
    "t": "",
    "fork": true,
    "f": "nsEytgXm/subagents_configs"
@@ -199,7 +199,7 @@
    "l": "ReScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-08-01T00:00:00Z",
+   "d": "2026-08-01T11:31:53Z",
    "t": "Local-only Chromium extension for syncing FMHY starred bookmarks.",
    "fork": false,
    "f": ""
@@ -209,8 +209,8 @@
    "l": "TypeScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-06-25T00:00:00Z",
-   "t": "Open source visualization dashboards for OpenSearch.",
+   "d": "2026-06-25T05:45:35Z",
+   "t": "📊 Open source visualization dashboards for OpenSearch.",
    "fork": true,
    "f": "opensearch-project/OpenSearch-Dashboards"
   },
@@ -219,7 +219,7 @@
    "l": "Rust",
    "s": 1,
    "fk": 0,
-   "d": "2026-06-12T00:00:00Z",
+   "d": "2026-06-12T16:08:37Z",
    "t": "",
    "fork": false,
    "f": ""
@@ -229,7 +229,7 @@
    "l": "JavaScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-05-29T00:00:00Z",
+   "d": "2026-05-29T02:50:14Z",
    "t": "An index of Empress' NFO collections.",
    "fork": true,
    "f": "jayantchandra/EmpressNfo"
@@ -239,8 +239,8 @@
    "l": "JavaScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-04-28T00:00:00Z",
-   "t": "A structured writing assistant for IELTS and PTE essays.",
+   "d": "2026-04-28T07:06:49Z",
+   "t": "Essay Architect is a modern, structured writing assistant designed to help students master the rigid structure required for high-scoring IELTS (Band 9) and PTE (90) essays.",
    "fork": false,
    "f": ""
   },
@@ -249,8 +249,8 @@
    "l": "TypeScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-03-02T00:00:00Z",
-   "t": "Open source, self-hosted alternative to Trello, Notion and Asana.",
+   "d": "2026-03-02T07:09:51Z",
+   "t": "Focalboard is an open source, self-hosted alternative to Trello, Notion, and Asana.",
    "fork": true,
    "f": "mattermost-community/focalboard"
   },
@@ -259,8 +259,8 @@
    "l": "TypeScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-02-27T00:00:00Z",
-   "t": "A modified web browser that helps in responsive web development.",
+   "d": "2026-02-27T10:37:31Z",
+   "t": "A modified web browser that helps in responsive web development. A web developer's must have dev-tool.",
    "fork": true,
    "f": "responsively-org/responsively-app"
   },
@@ -269,7 +269,7 @@
    "l": "TypeScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-02-22T00:00:00Z",
+   "d": "2026-02-22T10:39:49Z",
    "t": "A high-performance, interactive generative art sandbox built with React and Vite.",
    "fork": false,
    "f": ""
@@ -279,11 +279,11 @@
    "l": "TypeScript",
    "s": 2,
    "fk": 0,
-   "d": "2026-02-20T00:00:00Z",
-   "t": "Browser extension to locally solve captchas on NEPSE TMS using a statistical approach.",
+   "d": "2026-02-20T12:16:34Z",
+   "t": "Browser Extension to locally solve captchas on NEPSE TMS using statistical approach.",
    "fork": false,
    "f": ""
   }
  ],
- "generated": "2026-11-14T11:29:20Z"
+ "generated": "2026-11-14T11:31:53Z"
 }
