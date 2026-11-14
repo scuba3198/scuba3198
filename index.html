@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="An animated deep-sea dive through the scuba3198 GitHub profile.">
+<link rel="icon" href="avatar.png">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>scuba3198 Dive Log</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one continuous descent. The page is a water column; each section is a real ocean zone,
+   and a fixed depth gauge converts scroll position to metres (0 m to Challenger Deep, 10,935 m). */
+:root {
+  color-scheme: dark;
+  --surface: #0b6f8a;      /* sunlit water */
+  --mid: #06304a;          /* twilight */
+  --deep: #031526;         /* midnight */
+  --abyss: #01060d;        /* seabed */
+  --fg: #e6f6f7;
+  --fg-dim: #9dbfc6;
+  --line: rgba(160, 230, 235, .18);
+  --glow: #5cf2e0;         /* bioluminescent cyan */
+  --lure: #ffb84a;         /* dive-light amber */
+  --panel: rgba(4, 28, 44, .55);
+  --ts: #55a8ff; --js: #f4dc55; --res: #ff6478; --rust: #f0a878;
+  --cs: #63d977; --ps: #b693ff; --sh: #8fe6cb;
+  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--abyss); color: var(--fg);
+  font: 400 17px/1.6 var(--body);
+  overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--lure); outline-offset: 3px; border-radius: 4px; }
+
+.sea {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0, #08506e 9%, var(--mid) 24%, var(--deep) 52%, #020b16 78%, var(--abyss) 100%);
+}
+#water { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.zone {
+  position: relative; z-index: 2;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(64px, 11vw, 140px);
+}
+.wrap { max-width: 1080px; margin-inline: auto; }
+
+/* ---------- depth gauge ---------- */
+.gauge {
+  position: fixed; z-index: 20;
+  right: calc(14px + env(safe-area-inset-right, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: grid; gap: 2px; justify-items: end;
+  padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--panel); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-family: var(--mono); font-variant-numeric: tabular-nums;
+}
+.gauge small { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-dim); }
+.gauge b { font-weight: 500; font-size: 22px; color: var(--glow); line-height: 1.1; }
+.gauge b span { font-size: 12px; color: var(--fg-dim); margin-left: 4px; }
+.gauge .bar { width: 100%; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.gauge .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--glow), var(--lure)); }
+
+/* ---------- shared type ---------- */
+.zone-tag {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--glow); margin: 0 0 14px;
+}
+.zone-tag em { font-style: normal; color: var(--fg-dim); }
+h2 {
+  font-family: var(--display); font-weight: 800; font-size: clamp(2.1rem, 6.4vw, 4.4rem);
+  line-height: .98; letter-spacing: -.02em; margin: 0 0 18px; text-wrap: balance;
+}
+.lede { max-width: 58ch; color: var(--fg-dim); margin: 0 0 40px; }
+
+/* ---------- reveal (visible at rest; animation only plays when triggered) ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(34px) scale(.98); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.in { animation: rise .9s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(48px, 9vw, 110px) clamp(56px, 9vw, 120px); }
+.hero .wrap { display: grid; gap: 26px; }
+.id { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.avatar { position: relative; width: 76px; height: 76px; flex: none; }
+.avatar img { width: 100%; height: 100%; border-radius: 50%; display: block; border: 2px solid rgba(255,255,255,.7); position: relative; z-index: 1; background: var(--mid); }
+.avatar::before, .avatar::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid var(--glow);
+  animation: ping 3.2s ease-out infinite;
+}
+.avatar::after { animation-delay: 1.6s; }
+@keyframes ping { from { transform: scale(1); opacity: .9; } to { transform: scale(2.7); opacity: 0; } }
+.id p { margin: 0; line-height: 1.35; }
+.id .name { font-family: var(--display); font-weight: 700; font-size: 1.35rem; }
+.id .meta { font-family: var(--mono); font-size: 13px; color: rgba(230,246,247,.82); }
+
+h1 {
+  margin: 0; font-family: var(--display); font-weight: 800;
+  font-size: clamp(3.1rem, 15.5vw, 12.5rem); line-height: .86; letter-spacing: -.045em;
+  filter: url(#ripple);
+  overflow-wrap: anywhere;
+}
+h1 .ch { display: inline-block; animation: plunge 1.1s cubic-bezier(.2, 1.3, .3, 1) backwards, wave 3.2s ease-in-out infinite; animation-delay: calc(var(--i) * 65ms + 150ms), calc(var(--i) * 140ms + 1500ms); }
+@keyframes wave { 0%, 100% { transform: none; } 50% { transform: translateY(-.09em) rotate(-3deg); } }
+h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
+@keyframes plunge { from { opacity: 0; transform: translateY(-1.1em) rotate(-8deg); } to { opacity: 1; transform: none; } }
+.pitch { font-size: clamp(1.1rem, 2.3vw, 1.5rem); line-height: 1.4; max-width: 34ch; margin: 0; text-wrap: balance; }
+.pitch b { color: var(--lure); font-weight: 600; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid rgba(255,255,255,.3); margin: 8px 0 0; padding: 0; list-style: none; }
+.stats li { padding: 16px 12px 0 0; }
+.stats b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.stats span { font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(230,246,247,.8); }
+@media (max-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; } }
+
+.cta { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  font-family: var(--mono); font-size: 14px; letter-spacing: .04em;
+  padding: 13px 20px; border-radius: 999px; background: var(--fg); color: #03202f;
+  transition: transform .25s, box-shadow .25s;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 12px 34px rgba(92,242,224,.35); }
+.descend { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: rgba(230,246,247,.85); display: inline-flex; gap: 10px; align-items: center; }
+.descend i { width: 1px; height: 30px; background: currentColor; transform-origin: top; animation: sink 1.8s ease-in-out infinite; }
+@keyframes sink { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1) translateY(12px); opacity: 0; } }
+
+/* ---------- language mix ---------- */
+.stack { display: flex; height: 54px; border-radius: 8px; overflow: hidden; gap: 2px; margin-bottom: 30px; }
+.stack i { flex: var(--n) 1 0; background: var(--c); transform-origin: left; position: relative; overflow: hidden; }
+.stack.in { animation: none; }
+.stack.in i { animation: grow 1s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i) * 90ms); }
+.stack i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%); transform: translateX(-100%); animation: sheen 4.5s ease-in-out infinite; animation-delay: calc(var(--i) * .35s); }
+@keyframes grow { from { transform: scaleX(0); } to { transform: none; } }
+@keyframes sheen { 0%, 55% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+.langs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 4px 40px; margin: 0; padding: 0; list-style: none; }
+.langs li { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.langs .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 14px var(--c); align-self: center; }
+.langs .ln { font-family: var(--display); font-weight: 700; font-size: 1.25rem; }
+.langs .ln small { display: block; font: 400 13px/1.4 var(--body); color: var(--fg-dim); }
+.langs .ct { font-family: var(--mono); font-size: 1.5rem; font-variant-numeric: tabular-nums; color: var(--c); }
+
+/* ---------- projects ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.chip {
+  font: 500 12.5px/1 var(--mono); letter-spacing: .05em; color: var(--fg);
+  background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.chip:hover { border-color: var(--glow); }
+.chip[aria-pressed="true"] { background: var(--glow); border-color: var(--glow); color: #02202a; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.card {
+  --mx: 50%; --my: 50%;
+  position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 10px; min-width: 0;
+  padding: 20px; border-radius: 14px; text-decoration: none; overflow: hidden;
+  border: 1px solid var(--line); background: var(--panel);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .18s ease-out, border-color .25s;
+}
+.card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(260px circle at var(--mx) var(--my), color-mix(in srgb, var(--c) 34%, transparent), transparent 70%);
+}
+.card:hover { border-color: var(--c); }
+.card:hover::before, .card:focus-visible::before { opacity: 1; }
+.card > * { position: relative; }
+.card h3 { margin: 0; font: 700 1.22rem/1.15 var(--display); overflow-wrap: anywhere; }
+.card p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--fg-dim); }
+.card p.none { font-family: var(--mono); font-size: 12.5px; opacity: .7; }
+.card footer { display: flex; justify-content: space-between; gap: 10px; font: 400 12px/1 var(--mono); color: var(--fg-dim); }
+.card footer .lg { color: var(--c); display: inline-flex; gap: 7px; align-items: center; }
+.card footer .lg::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+.card.pinned { grid-column: 1 / -1; padding: clamp(22px, 3.4vw, 36px); border-color: color-mix(in srgb, var(--lure) 60%, transparent); }
+.card.pinned h3 { font-size: clamp(1.8rem, 5vw, 3rem); margin-top: 8px; }
+.card.pinned p { font-size: clamp(1rem, 1.8vw, 1.2rem); max-width: 52ch; }
+.pin { font: 500 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--lure); }
+
+/* ---------- timeline ---------- */
+.log { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); padding: clamp(16px, 3vw, 30px); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.cols { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 2px; align-items: end; min-height: 300px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.col { display: flex; flex-direction: column-reverse; align-items: center; gap: 7px; min-width: 0; }
+.bub {
+  width: clamp(20px, 5.4vw, 34px); aspect-ratio: 1; border-radius: 50%; padding: 0; cursor: pointer;
+  border: 1.5px solid var(--c); background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.75), color-mix(in srgb, var(--c) 55%, transparent) 38%, color-mix(in srgb, var(--c) 14%, transparent) 72%);
+  animation: bob 4s ease-in-out infinite; animation-delay: calc(var(--k) * -0.37s);
+  transition: box-shadow .2s, scale .2s;
+}
+.bub:hover, .bub[aria-pressed="true"] { box-shadow: 0 0 0 3px rgba(255,255,255,.2), 0 0 26px var(--c); scale: 1.18; }
+.bub.fork { border-style: dashed; background: color-mix(in srgb, var(--c) 12%, transparent); }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.months { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 2px; margin-top: 8px; font: 400 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-dim); text-align: center; }
+.months b { display: block; color: var(--fg); font-weight: 500; font-size: 13px; }
+.readout { margin-top: 22px; display: grid; gap: 4px; min-height: 5.2em; }
+.readout .when { font: 400 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--glow); }
+.readout a { font: 800 clamp(1.5rem, 4.4vw, 2.3rem)/1.1 var(--display); text-decoration: none; overflow-wrap: anywhere; }
+.readout a:hover { color: var(--glow); }
+.readout .what { font-size: 14.5px; color: var(--fg-dim); margin: 0; max-width: 60ch; }
+.key { margin: 14px 0 0; font: 400 12px/1.5 var(--mono); color: var(--fg-dim); }
+
+/* ---------- achievements + forks ---------- */
+.medals { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-bottom: 64px; }
+.medal { display: grid; justify-items: center; text-align: center; gap: 12px; padding: 12px; }
+.orb { position: relative; width: 132px; height: 132px; display: grid; place-items: center; }
+.orb::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1px dashed var(--c); animation: spin 16s linear infinite; }
+.orb::after { content: ""; position: absolute; inset: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 70%, white), color-mix(in srgb, var(--c) 30%, transparent) 55%, transparent 72%); box-shadow: 0 0 50px color-mix(in srgb, var(--c) 55%, transparent); animation: pulse 3.4s ease-in-out infinite; }
+.orb svg { position: relative; z-index: 1; width: 50px; height: 50px; fill: none; stroke: #02131c; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.orb .x { position: absolute; z-index: 2; right: 8px; top: 8px; font: 500 12px/1 var(--mono); background: var(--abyss); color: var(--c); border: 1px solid var(--c); border-radius: 999px; padding: 5px 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 50% { transform: scale(1.07); } }
+.medal h3 { margin: 0; font: 700 1.3rem/1.1 var(--display); }
+.medal p { margin: 0; font-size: 14px; color: var(--fg-dim); max-width: 26ch; }
+h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
+.forks { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.forks li { border-bottom: 1px solid var(--line); }
+.forks a { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(150px, auto); gap: 6px 20px; align-items: baseline; padding: 16px 6px; text-decoration: none; transition: background .25s, padding .25s; }
+.forks a:hover { background: rgba(92,242,224,.07); padding-left: 16px; }
+.forks .fn { font: 700 1.15rem/1.2 var(--display); overflow-wrap: anywhere; }
+.forks .from { font: 400 12.5px/1.4 var(--mono); color: var(--fg-dim); overflow-wrap: anywhere; }
+.forks .st { font: 400 12.5px/1 var(--mono); color: var(--lure); white-space: nowrap; text-align: right; }
+@media (max-width: 620px) { .forks a { grid-template-columns: minmax(0, 1fr) auto; } .forks a:hover { padding-left: 6px; } .forks .from { grid-column: 1 / -1; grid-row: 2; } }
+
+/* ---------- seabed ---------- */
+.bed { text-align: center; padding-block: clamp(70px, 12vw, 150px) clamp(110px, 14vw, 170px); }
+.bed h2 { font-size: clamp(2.4rem, 9vw, 6.5rem); }
+.bed p { color: var(--fg-dim); max-width: 46ch; margin: 0 auto 30px; }
+.bed .btn { background: var(--lure); }
+.bed .src { margin-top: 44px; font: 400 11.5px/1.6 var(--mono); color: var(--fg-dim); opacity: .8; }
+
+/* ---------- crazier: kinetic tape, drifting cards, pressure glitch ---------- */
+.tape { position: relative; z-index: 2; overflow: hidden; padding-block: 10px; display: grid; gap: 4px; }
+.tape .row { display: flex; width: max-content; white-space: nowrap; will-change: transform; font: 800 clamp(2.4rem, 7.5vw, 5.6rem)/1.05 var(--display); letter-spacing: -.03em; }
+.tape .row span { padding: 0 .32em; color: rgba(230, 246, 247, .16); }
+.tape .row span.o { color: transparent; -webkit-text-stroke: 1.5px rgba(92, 242, 224, .55); }
+@keyframes drift { 50% { translate: 0 -7px; } }
+.card { animation: drift 6s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -0.9s); }
+.card.in { animation: rise .9s cubic-bezier(.2, .8, .2, 1) backwards, drift 6s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 70ms), calc(var(--i, 0) * -0.9s); }
+@keyframes crush {
+  0%, 88%, 100% { text-shadow: none; transform: none; }
+  90% { text-shadow: -4px 0 var(--res), 4px 0 var(--glow); transform: skewX(-7deg); }
+  93% { text-shadow: 4px 0 var(--res), -4px 0 var(--glow); transform: skewX(5deg) scaleY(.92); }
+  96% { text-shadow: -2px 0 var(--lure), 2px 0 var(--ps); transform: translateX(-4px); }
+}
+.bed h2, .bed h2.in { animation: crush 3.6s steps(1, end) infinite; }
+.exit { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.btn.up { background: transparent; color: var(--fg); border: 1px solid var(--glow); cursor: pointer; }
+.btn.up:hover { background: rgba(92, 242, 224, .12); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  h1 { filter: none; }
+}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="ripple" x="-5%" y="-10%" width="110%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="4" result="n">
+      <animate attributeName="baseFrequency" dur="9s" values="0.012 0.03;0.02 0.05;0.012 0.03" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="sea">
+  <canvas id="water" aria-hidden="true"></canvas>
+
+  <aside class="gauge" aria-hidden="true">
+    <small id="gzone">Surface</small>
+    <b><span id="gdepth">0</span><span>m</span></b>
+    <div class="bar"><i id="gbar"></i></div>
+  </aside>
+
+  <header class="zone hero">
+    <div class="wrap">
+      <div class="id">
+        <div class="avatar"><img src="avatar.png" alt="scuba3198 avatar" width="76" height="76"></div>
+        <div>
+          <p class="name">Mumukshu D.C</p>
+          <p class="meta">Nepal · status: 🎯 Focusing</p>
+        </div>
+      </div>
+      <h1 aria-label="scuba3198" id="title">scuba3198</h1>
+      <p class="pitch">I build small, sharp tools: browser extensions, Windows utilities and trading helpers for <b>NEPSE</b>. Scroll to dive through all of it.</p>
+      <ul class="stats">
+        <li><b data-count="28">28</b><span>public repos</span></li>
+        <li><b data-count="20">20</b><span>built from scratch</span></li>
+        <li><b data-count="7">7</b><span>languages</span></li>
+        <li><b data-count="26">26</b><span>stars earned</span></li>
+      </ul>
+      <div class="cta">
+        <a class="btn" href="https://github.com/scuba3198">github.com/scuba3198 ↗</a>
+        <span class="descend"><i></i>Descend</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="tape" aria-hidden="true"><div class="row"></div><div class="row"></div></div>
+
+  <section class="zone" data-zone>
+    <div class="wrap">
+      <p class="zone-tag reveal">Sunlight zone <em>0 – 200 m</em></p>
+      <h2 class="reveal">Seven languages, one diver.</h2>
+      <p class="lede reveal">TypeScript does the heavy lifting, but I reach for ReScript, Rust and C# when the job calls for it. Counts are the primary language of each of my 28 repos.</p>
+      <div class="stack reveal" id="stack" role="img" aria-label="Share of repositories by primary language"></div>
+      <ul class="langs" id="langs"></ul>
+    </div>
+  </section>
+
+  <section class="zone" data-zone>
+    <div class="wrap">
+      <p class="zone-tag reveal">Twilight zone <em>200 – 1,000 m</em></p>
+      <h2 class="reveal">Twenty things I built from nothing.</h2>
+      <p class="lede reveal">Every card is an original repo. Filter by language, hover to light one up, click to open it on GitHub.</p>
+      <div class="filters reveal" id="filters" role="group" aria-label="Filter projects by language"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="zone" data-zone>
+    <div class="wrap">
+      <p class="zone-tag reveal">Midnight zone <em>1,000 – 4,000 m</em></p>
+      <h2 class="reveal">The 2026 dive log.</h2>
+      <p class="lede reveal">Each bubble is a repo, placed in the month it was last updated. October was the busiest month, with seven. Tap a bubble to inspect it.</p>
+      <div class="log reveal">
+        <div class="cols" id="cols"></div>
+        <div class="months" id="months"></div>
+        <div class="readout" id="readout" aria-live="polite"></div>
+        <p class="key">Solid bubble: original repo · dashed bubble: fork · colour: language</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="zone" data-zone>
+    <div class="wrap">
+      <p class="zone-tag reveal">Abyssal zone <em>4,000 – 6,000 m</em></p>
+      <h2 class="reveal">Things that glow down here.</h2>
+      <p class="lede reveal">Three GitHub achievements unlocked so far.</p>
+      <div class="medals">
+        <div class="medal reveal" style="--c: var(--glow)">
+          <div class="orb"><span class="x">×2</span>
+            <svg viewBox="0 0 48 48"><path d="M4 30c8-2 14-10 18-22 2 10 8 16 22 18-8 2-14 2-20 0-6 4-12 5-20 4z"/><path d="M22 26l-3 8M30 27l1 7"/></svg>
+          </div>
+          <h3>Pull Shark</h3>
+          <p>Bronze tier, earned twice over, for pull requests that got merged.</p>
+        </div>
+        <div class="medal reveal" style="--c: var(--lure)">
+          <div class="orb">
+            <svg viewBox="0 0 48 48"><circle cx="17" cy="16" r="6"/><circle cx="33" cy="16" r="6"/><path d="M6 40c0-7 5-11 11-11s8 3 8 3 2-3 8-3 9 4 9 11"/></svg>
+          </div>
+          <h3>Pair Extraordinaire</h3>
+          <p>Co-authored commits on a merged pull request.</p>
+        </div>
+        <div class="medal reveal" style="--c: var(--res)">
+          <div class="orb">
+            <svg viewBox="0 0 48 48"><path d="M26 4L10 27h12l-2 17 18-25H25z"/></svg>
+          </div>
+          <h3>YOLO</h3>
+          <p>Merged a pull request without waiting for a review.</p>
+        </div>
+      </div>
+
+      <h2 class="sub reveal">Eight forks I keep in the tank.</h2>
+      <p class="lede reveal">Other people's projects I've patched, extended or kept close, ranked by the stars and forks each one has picked up. Wand-Enhancer is my most-starred repo, with 5 stars and 2 forks of its own.</p>
+      <ul class="forks" id="forks"></ul>
+    </div>
+  </section>
+
+  <div class="tape" aria-hidden="true"><div class="row"></div><div class="row"></div></div>
+
+  <footer class="zone bed" data-zone>
+    <div class="wrap">
+      <p class="zone-tag reveal" style="justify-content:center">Hadal zone <em>Challenger Deep · 10,935 m</em></p>
+      <h2 class="reveal">You hit the seabed.</h2>
+      <p class="reveal">That's everything public as of 14 November 2026. Come back up and follow along for the next dive.</p>
+      <div class="exit reveal">
+        <a class="btn" href="https://github.com/scuba3198">Follow scuba3198 on GitHub ↗</a>
+        <button class="btn up" id="surface" type="button">Emergency ascent ↑</button>
+      </div>
+      <p class="src">Figures read from the public GitHub profile on 14 Nov 2026. Stars earned sums the star counts shown on each repo card.</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+(() => {
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const GH = 'https://github.com/scuba3198/';
+const LANG = {
+  TypeScript: { c: 'var(--ts)', hex: '#55a8ff', note: 'Web apps, extensions, the portfolio' },
+  JavaScript: { c: 'var(--js)', hex: '#f4dc55', note: 'Extensions and quick tools' },
+  ReScript:   { c: 'var(--res)', hex: '#ff6478', note: 'Typed, functional front-ends' },
+  Rust:       { c: 'var(--rust)', hex: '#f0a878', note: 'Native desktop utilities' },
+  'C#':       { c: 'var(--cs)', hex: '#63d977', note: 'Windows GUI apps' },
+  PowerShell: { c: 'var(--ps)', hex: '#b693ff', note: 'Windows policy panel' },
+  Shell:      { c: 'var(--sh)', hex: '#8fe6cb', note: 'Config scripts' }
+};
+// n: name, l: language, s: stars, d: last updated (2026), t: description, f: forked from
+const R = [
+  { n: 'Frostbyte', l: 'C#', s: 2, d: '11-14', pin: 1, t: 'Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI.' },
+  { n: 'nepse-momentum-trader', l: 'JavaScript', s: 1, d: '11-14' },
+  { n: 'Stremio-Kai', l: 'JavaScript', s: 0, d: '11-14', f: 'allecsc/Stremio-Kai', t: 'Personal fork with auto-applied patches.' },
+  { n: 'reciprocity-tracker', l: 'JavaScript', s: 1, d: '11-13', t: 'A small, dependency-free CURE (cumulative reciprocity) tracker.' },
+  { n: 'fujiang-pojia', l: 'JavaScript', s: 0, d: '11-09', f: 'java99999/java-pojia', t: 'DeepSeek Harness plugin.' },
+  { n: 'essay-architect-pro', l: 'TypeScript', s: 0, d: '10-28', t: 'An AI writing suite for IELTS and PTE essays.' },
+  { n: 'pte-class-coverage', l: 'TypeScript', s: 1, d: '10-28', t: 'A local-first tracker for PTE Academic class coverage.' },
+  { n: 'salary-calculator', l: 'TypeScript', s: 1, d: '10-28', t: 'A React, Vite and Supabase workday and earnings tracker.' },
+  { n: 'chrome-extension-source-viewer', l: 'JavaScript', s: 1, d: '10-26' },
+  { n: 'oled-wallpaper-automator', l: 'Rust', s: 1, d: '10-23' },
+  { n: 'linkbridge', l: 'JavaScript', s: 0, d: '10-17', t: 'Resolve FileCrypt container links after a manual CAPTCHA and copy destinations to the clipboard. A lightweight Chromium extension.' },
+  { n: 'brave-feature-control', l: 'PowerShell', s: 1, d: '10-13', t: 'A native Windows panel to toggle optional Brave features with reversible policies, presets and backups.' },
+  { n: 'cure-evolution', l: 'ReScript', s: 0, d: '09-30', t: 'An interactive ReScript and React story of cumulative reciprocity in evolving populations.' },
+  { n: 'Wand-Enhancer', l: 'C#', s: 5, fk: 2, d: '09-11', f: 'byst4nder/Wemod-Patcher', t: 'Advanced UX and interoperability extension for the Wand (WeMod) app.' },
+  { n: 'loan-calculator', l: 'ReScript', s: 1, d: '09-05', t: 'A browser-based loan calculator.' },
+  { n: 'mumukshu-portfolio', l: 'TypeScript', s: 1, d: '08-19', t: 'My portfolio site, with a minimalist aesthetic.' },
+  { n: 'bionic-reading', l: 'TypeScript', s: 1, d: '08-11' },
+  { n: 'allow-copy-plus-origin', l: 'TypeScript', s: 2, d: '08-10' },
+  { n: 'subagents_configs', l: 'Shell', s: 0, d: '08-03', f: 'nsEytgXm/subagents_configs' },
+  { n: 'fmhy-sync', l: 'ReScript', s: 1, d: '08-01', t: 'Local-only Chromium extension for syncing FMHY starred bookmarks.' },
+  { n: 'OpenSearch-Dashboards', l: 'TypeScript', s: 0, d: '06-25', f: 'opensearch-project/OpenSearch-Dashboards', t: 'Open source visualization dashboards for OpenSearch.' },
+  { n: 'extensity-rust', l: 'Rust', s: 1, d: '06-12' },
+  { n: 'EmpressNfo', l: 'JavaScript', s: 1, d: '05-29', f: 'jayantchandra/EmpressNfo', t: "An index of Empress' NFO collections." },
+  { n: 'essay-architect', l: 'JavaScript', s: 1, d: '04-28', t: 'A structured writing assistant for IELTS and PTE essays.' },
+  { n: 'focalboard', l: 'TypeScript', s: 0, d: '03-02', f: 'mattermost-community/focalboard', t: 'Open source, self-hosted alternative to Trello, Notion and Asana.' },
+  { n: 'responsively-app', l: 'TypeScript', s: 0, d: '02-27', f: 'responsively-org/responsively-app', t: 'A modified web browser that helps in responsive web development.' },
+  { n: 'Geoflux', l: 'TypeScript', s: 1, d: '02-22', t: 'A high-performance, interactive generative art sandbox built with React and Vite.' },
+  { n: 'tms-captcha', l: 'TypeScript', s: 2, d: '02-20', t: 'Browser extension to locally solve captchas on NEPSE TMS using a statistical approach.' }
+];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmt = d => MON[+d.slice(0, 2) - 1] + ' ' + (+d.slice(3)) + ', 2026';
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const $ = id => document.getElementById(id);
+const stars = s => s ? '★ ' + s : '';
+
+/* hero title letters */
+const title = $('title');
+title.textContent = '';
+[...'scuba3198'].forEach((ch, i) => {
+  const s = el('span', 'ch' + (/\d/.test(ch) ? ' num' : ''), ch);
+  s.style.setProperty('--i', i); s.setAttribute('aria-hidden', 'true'); title.append(s);
+});
+
+/* counters */
+if (!REDUCED) document.querySelectorAll('[data-count]').forEach(b => {
+  const end = +b.dataset.count, t0 = performance.now() + 500;
+  b.textContent = '0';
+  const step = t => {
+    const p = Math.min(1, Math.max(0, (t - t0) / 1400));
+    b.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+});
+
+/* language mix */
+const counts = {};
+R.forEach(r => { (counts[r.l] ??= { all: 0, own: 0 }); counts[r.l].all++; if (!r.f) counts[r.l].own++; });
+const order = Object.keys(counts).sort((a, b) => counts[b].all - counts[a].all);
+order.forEach((l, i) => {
+  const seg = el('i'); seg.style.cssText = `--n:${counts[l].all};--c:${LANG[l].c};--i:${i}`; seg.title = `${l}: ${counts[l].all}`;
+  $('stack').append(seg);
+  const li = el('li', 'reveal'); li.style.setProperty('--c', LANG[l].c); li.style.setProperty('--i', i);
+  const name = el('span', 'ln', l); name.append(el('small', '', LANG[l].note));
+  li.append(el('span', 'dot'), name, el('span', 'ct', String(counts[l].all).padStart(2, '0')));
+  $('langs').append(li);
+});
+
+/* project cards */
+const own = R.filter(r => !r.f);
+const grid = $('grid'), filters = $('filters');
+function card(r, i) {
+  const a = el('a', 'card' + (r.pin ? ' pinned' : '')); a.href = GH + r.n; a.dataset.lang = r.l;
+  a.style.setProperty('--c', LANG[r.l].c); a.style.setProperty('--i', i % 6);
+  const head = el('div');
+  if (r.pin) head.append(el('div', 'pin', 'Pinned'));
+  head.append(el('h3', '', r.n));
+  const p = r.t ? el('p', '', r.t) : el('p', 'none', 'No description on GitHub yet');
+  const f = el('footer'); f.append(el('span', 'lg', r.l), el('span', '', [stars(r.s), fmt(r.d).replace(', 2026', '')].filter(Boolean).join(' · ')));
+  a.append(head, p, f);
+  a.addEventListener('pointermove', e => {
+    const b = a.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+    a.style.setProperty('--mx', x * 100 + '%'); a.style.setProperty('--my', y * 100 + '%');
+    if (!REDUCED && e.pointerType === 'mouse') { a.style.setProperty('--ry', (x - .5) * 9 + 'deg'); a.style.setProperty('--rx', (.5 - y) * 9 + 'deg'); }
+  });
+  a.addEventListener('pointerleave', () => { a.style.setProperty('--rx', '0deg'); a.style.setProperty('--ry', '0deg'); });
+  return a;
+}
+own.forEach((r, i) => grid.append(card(r, i)));
+['All', ...order.filter(l => counts[l].own)].forEach(l => {
+  const b = el('button', 'chip', l === 'All' ? `All ${own.length}` : `${l} ${counts[l].own}`);
+  b.type = 'button'; b.id = 'f-' + l.replace(/\W/g, 's'); b.setAttribute('aria-pressed', l === 'All');
+  b.addEventListener('click', () => {
+    filters.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+    let k = 0;
+    grid.querySelectorAll('.card').forEach(c => {
+      const show = l === 'All' || c.dataset.lang === l;
+      c.hidden = !show;
+      if (show) { c.classList.remove('in'); c.style.setProperty('--i', k++); void c.offsetWidth; c.classList.add('in'); }
+    });
+  });
+  filters.append(b);
+});
+
+/* timeline */
+const cols = $('cols'), months = $('months'), readout = $('readout');
+function inspect(r, btn) {
+  cols.querySelectorAll('.bub').forEach(b => b.setAttribute('aria-pressed', b === btn));
+  readout.textContent = '';
+  const a = el('a', '', r.n); a.href = GH + r.n;
+  readout.append(
+    el('span', 'when', `Last updated ${fmt(r.d)} · ${r.l}${r.f ? ' · fork' : ''}`), a,
+    el('p', 'what', r.t || (r.f ? 'Forked from ' + r.f + '.' : 'No description on GitHub yet.'))
+  );
+}
+let k = 0, firstBtn;
+for (let m = 2; m <= 11; m++) {
+  const col = el('div', 'col');
+  const inM = R.filter(r => +r.d.slice(0, 2) === m).sort((a, b) => a.d.localeCompare(b.d));
+  inM.forEach(r => {
+    const b = el('button', 'bub' + (r.f ? ' fork' : '')); b.type = 'button';
+    b.style.setProperty('--c', LANG[r.l].c); b.style.setProperty('--k', k++);
+    b.setAttribute('aria-label', `${r.n}, updated ${fmt(r.d)}`); b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => inspect(r, b));
+    b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') inspect(r, b); });
+    if (r.n === 'Frostbyte') firstBtn = [r, b];
+    col.append(b);
+  });
+  cols.append(col);
+  const lab = el('span'); lab.append(el('b', '', String(inM.length)), document.createTextNode(MON[m - 1]));
+  months.append(lab);
+}
+inspect(...firstBtn);
+
+/* forks */
+R.filter(r => r.f).sort((a, b) => (b.s + (b.fk || 0)) - (a.s + (a.fk || 0))).forEach((r, i) => {
+  const li = el('li', 'reveal'); li.style.setProperty('--i', i % 5);
+  const a = el('a'); a.href = GH + r.n;
+  a.append(el('span', 'fn', r.n), el('span', 'from', '⑂ ' + r.f), el('span', 'st', [r.l, stars(r.s), r.fk ? '⑂ ' + r.fk : ''].filter(Boolean).join(' · ')));
+  li.append(a); $('forks').append(li);
+});
+
+/* reveal on approach: elements are visible by default, the animation starts just before they scroll in */
+if (!REDUCED && 'IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); if (e.target.tagName === 'H2') scramble(e.target); }
+  }), { rootMargin: '0px 0px 12% 0px' });
+  document.querySelectorAll('.reveal, .card').forEach(n => io.observe(n));
+}
+
+/* headings decode themselves as they arrive */
+function scramble(node) {
+  const txt = node.textContent, pool = [...txt.replace(/\s/g, '')], t0 = performance.now();
+  node.setAttribute('aria-label', txt);
+  const step = t => {
+    const p = Math.min(1, (t - t0) / 1100), n = Math.floor(p * txt.length);
+    node.textContent = p < 1 ? txt.slice(0, n) + [...txt.slice(n)].map(c => c === ' ' ? ' ' : pool[Math.random() * pool.length | 0]).join('') : txt;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* kinetic tape of repo names: speed and skew follow scroll velocity */
+const tapeRows = [...document.querySelectorAll('.tape .row')];
+tapeRows.forEach((row, i) => {
+  const names = R.filter((_, j) => j % 2 === i % 2).map(r => r.n);
+  for (let k = 0; k < 2; k++) names.forEach((n, j) => row.append(el('span', j % 2 ? 'o' : '', n)));
+  row._o = i * 300; row._d = i % 2 ? -1 : 1; row._h = 0;
+});
+function tapes(v) {
+  for (const row of tapeRows) {
+    const half = row._h || (row._h = row.scrollWidth / 2) || 1;
+    row._o = (((row._o + row._d * (.7 + v * .55)) % half) + half) % half;
+    row.style.transform = `translateX(${-row._o}px) skewX(${Math.max(-20, Math.min(20, v * -.7 * row._d))}deg)`;
+  }
+}
+const retape = () => { tapeRows.forEach(r => r._h = 0); tapes(0); };
+addEventListener('resize', retape); if (document.fonts) document.fonts.ready.then(retape); retape();
+
+/* emergency ascent */
+$('surface').addEventListener('click', e => {
+  if (REDUCED) return scrollTo(0, 0);
+  const b = e.currentTarget.getBoundingClientRect(), from = scrollY, t0 = performance.now(), dur = 2600;
+  for (let i = 0; i < 4; i++) setTimeout(() => boom(b.left + b.width / 2 + (i - 1.5) * 60, b.top), i * 140);
+  const step = t => { const p = Math.min(1, (t - t0) / dur), q = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; scrollTo(0, from * (1 - q)); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+});
+
+/* depth gauge */
+const ZONES = [[0, 'Surface'], [5, 'Sunlight zone'], [200, 'Twilight zone'], [1000, 'Midnight zone'], [4000, 'Abyssal zone'], [6000, 'Hadal zone']];
+const MAXD = 10935, secs = [...document.querySelectorAll('[data-zone]')];
+const BOUNDS = [0, 200, 1000, 4000, 6000, MAXD];
+let frac = 0, depth = 0;
+function sound() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  frac = max > 0 ? Math.min(1, scrollY / max) : 0;
+  // map each section to its real zone range so the gauge matches the section label
+  const y = scrollY + innerHeight * .5;
+  depth = 0;
+  for (let i = 0; i < secs.length; i++) {
+    const top = secs[i].offsetTop, h = secs[i].offsetHeight;
+    if (y >= top) depth = BOUNDS[i] + Math.min(1, (y - top) / h) * (BOUNDS[i + 1] - BOUNDS[i]);
+  }
+  if (frac > .995) depth = MAXD;
+  $('gdepth').textContent = Math.round(depth).toLocaleString('en-US');
+  let z = ZONES[0][1]; for (const [d, n] of ZONES) if (depth >= d) z = n;
+  $('gzone').textContent = z;
+  $('gbar').style.width = (depth / MAXD * 100) + '%';
+}
+addEventListener('scroll', sound, { passive: true }); addEventListener('resize', sound); sound();
+
+/* ---------- water canvas ---------- */
+const cv = $('water'), cx = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1;
+const ptr = { x: -999, y: -999, on: false };
+addEventListener('pointermove', e => {
+  ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true;
+  if (!REDUCED && sparks.length < 160 && Math.random() < .55) sparks.push({ x: ptr.x, y: ptr.y, vx: rnd(-.5, .5), vy: rnd(-1.8, -.5), r: rnd(1.5, 4.5), a: .9 });
+}, { passive: true });
+addEventListener('pointerdown', e => { if (!REDUCED) boom(e.clientX, e.clientY); }, { passive: true });
+addEventListener('pointerleave', () => ptr.on = false);
+const rnd = (a, b) => a + Math.random() * (b - a);
+let bubbles = [], snow = [], jellies = [], fish = [], rings = [], sparks = [], sv = 0, lastY = scrollY;
+const angler = { x: -500, y: 300, dir: 1 };
+function size() {
+  DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const n = Math.round(Math.min(1, W * H / 900000) * 60) + 30;
+  bubbles = Array.from({ length: Math.round(n * .5) }, () => ({ x: rnd(0, W), y: rnd(0, H), r: rnd(1.5, 7), v: rnd(.3, 1.3), p: rnd(0, 6.3) }));
+  snow = Array.from({ length: n }, () => ({ x: rnd(0, W), y: rnd(0, H), r: rnd(.6, 2.2), v: rnd(.08, .4), p: rnd(0, 6.3), h: Math.random() < .5 ? '#5cf2e0' : (Math.random() < .5 ? '#ffb84a' : '#b693ff') }));
+  jellies = Array.from({ length: W < 700 ? 2 : 4 }, (_, i) => ({ x: rnd(.1, .9) * W, y: rnd(.2, 1) * H, s: rnd(22, 46), v: rnd(.18, .4), p: rnd(0, 6.3), h: ['#5cf2e0', '#b693ff', '#ff6478', '#55a8ff'][i % 4] }));
+}
+function school() {
+  fish = []; const schools = W < 700 ? 2 : 4, per = W < 700 ? 7 : 12;
+  for (let s = 0; s < schools; s++) {
+    const dir = s % 2 ? -1 : 1, y0 = rnd(.15, .85) * H, x0 = rnd(0, W), sp = rnd(.9, 2), h = ['#9ff5ea', '#ffd38a', '#a9c8ff', '#ff9fb0'][s % 4];
+    for (let i = 0; i < per; i++) fish.push({ x: x0 + rnd(-110, 110), y: y0 + rnd(-50, 50), dir, v: sp * rnd(.85, 1.15), s: rnd(7, 13), p: rnd(0, 6.3), h, fx: 0, fy: 0 });
+  }
+  angler.y = H * .55;
+}
+function boom(x, y) {
+  rings.push({ x, y, r: 0 });
+  for (let i = 0; i < 22; i++) { const a = rnd(0, 6.3), v = rnd(1, 6.5); sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: rnd(1.5, 5.5), a: 1 }); }
+  for (const f of fish) { const dx = f.x - x, dy = f.y - y, d = Math.hypot(dx, dy) + 1; if (d < 340) { f.fx += dx / d * 9; f.fy += dy / d * 9; } }
+  for (const b of bubbles) { const dx = b.x - x, dy = b.y - y, d = Math.hypot(dx, dy) + 1; if (d < 260) { b.x += dx / d * 40; b.y += dy / d * 40; } }
+}
+function drawAngler(t, a) {
+  const S = Math.min(130, W * .2), y = angler.y + Math.sin(t * .7) * 14;
+  const lx = S * 1.15, ly = -S * .95 + Math.sin(t * 2) * 6, fl = .65 + .35 * Math.sin(t * 5) * Math.sin(t * 1.3);
+  cx.save(); cx.translate(angler.x, y); cx.scale(angler.dir, 1); cx.globalAlpha = a;
+  cx.globalCompositeOperation = 'lighter';
+  const g = cx.createRadialGradient(lx, ly, 0, lx, ly, S * 1.7);
+  g.addColorStop(0, `rgba(255,190,90,${.55 * fl})`); g.addColorStop(1, 'rgba(255,190,90,0)');
+  cx.fillStyle = g; cx.beginPath(); cx.arc(lx, ly, S * 1.7, 0, 6.3); cx.fill();
+  cx.globalCompositeOperation = 'source-over';
+  cx.fillStyle = '#01070e'; cx.strokeStyle = 'rgba(255,190,90,.5)'; cx.lineWidth = 1.5;
+  const wag = Math.sin(t * 3) * 9;
+  cx.beginPath(); cx.moveTo(-S * .85, 0); cx.lineTo(-S * 1.5, -S * .45 + wag); cx.lineTo(-S * 1.5, S * .45 + wag); cx.closePath(); cx.fill(); cx.stroke();
+  cx.beginPath(); cx.ellipse(0, 0, S, S * .72, 0, 0, 6.3); cx.fill(); cx.stroke();
+  cx.beginPath(); cx.moveTo(-S * .1, -S * .7); cx.lineTo(-S * .45, -S * 1.02); cx.lineTo(-S * .6, -S * .56); cx.stroke();
+  cx.strokeStyle = 'rgba(230,246,247,.85)'; cx.beginPath(); cx.moveTo(S * .98, S * .05);
+  for (let i = 1; i <= 9; i++) cx.lineTo(S * .98 - i * S * .085, S * .05 + (i % 2 ? S * .17 : S * .03) + i * S * .012);
+  cx.stroke();
+  cx.fillStyle = '#ffb84a'; cx.beginPath(); cx.arc(S * .5, -S * .25, S * .07, 0, 6.3); cx.fill();
+  cx.strokeStyle = 'rgba(255,190,90,.7)'; cx.beginPath(); cx.moveTo(S * .35, -S * .64); cx.quadraticCurveTo(S * .6, -S * 1.35, lx, ly); cx.stroke();
+  cx.fillStyle = '#fff3d0'; cx.beginPath(); cx.arc(lx, ly, 4 + fl * 2, 0, 6.3); cx.fill();
+  cx.restore();
+}
+function jelly(j, t, a) {
+  const beat = Math.sin(t * 1.6 + j.p), s = j.s, w = s * (1 + beat * .1), h = s * (.78 - beat * .1);
+  cx.save(); cx.translate(j.x + Math.sin(t * .35 + j.p) * 26, j.y); cx.globalAlpha = a;
+  const g = cx.createRadialGradient(0, -h * .3, 2, 0, 0, w * 1.9);
+  g.addColorStop(0, j.h + 'cc'); g.addColorStop(.45, j.h + '33'); g.addColorStop(1, j.h + '00');
+  cx.fillStyle = g; cx.beginPath(); cx.arc(0, 0, w * 1.9, 0, 6.3); cx.fill();
+  cx.fillStyle = j.h + '55'; cx.strokeStyle = j.h; cx.lineWidth = 1.2;
+  cx.beginPath(); cx.moveTo(-w, 0); cx.bezierCurveTo(-w, -h * 1.5, w, -h * 1.5, w, 0); cx.quadraticCurveTo(0, h * .35, -w, 0); cx.fill(); cx.stroke();
+  cx.globalAlpha = a * .7;
+  for (let i = -2; i <= 2; i++) {
+    cx.beginPath(); const x0 = i * w * .36; cx.moveTo(x0, h * .1);
+    for (let k = 1; k <= 9; k++) cx.lineTo(x0 + Math.sin(t * 2.1 + j.p + k * .75 + i) * (3 + k * .9), h * .1 + k * s * .23);
+    cx.stroke();
+  }
+  cx.restore();
+}
+function draw(ms) {
+  const t = ms / 1000; cx.clearRect(0, 0, W, H);
+  if (!REDUCED) { const sy = scrollY; sv += ((sy - lastY) - sv) * .18; lastY = sy; if (Math.abs(sv) < .01) sv = 0; tapes(sv); }
+  const light = Math.max(0, 1 - frac * 3.4), dark = Math.min(1, frac * 1.7);
+  // sun rays near the surface
+  if (light > .01) {
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 7; i++) {
+      const x = W * (.05 + i * .15) + Math.sin(t * .22 + i * 1.7) * 50, w = 50 + (i % 3) * 46;
+      const g = cx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, `rgba(190,255,245,${.2 * light * (.6 + .4 * Math.sin(t * .5 + i))})`); g.addColorStop(1, 'rgba(190,255,245,0)');
+      cx.fillStyle = g; cx.beginPath(); cx.moveTo(x, -10); cx.lineTo(x + w, -10); cx.lineTo(x + w - 230, H); cx.lineTo(x - 310, H); cx.fill();
+    }
+    cx.restore();
+  }
+  // bubbles rise, thinning out with depth
+  cx.lineWidth = 1;
+  const nb = Math.ceil(bubbles.length * (1 - dark * .75));
+  for (let i = 0; i < nb; i++) {
+    const b = bubbles[i]; b.y -= b.v + sv * (.25 + b.r * .09); b.x += Math.sin(t * 1.4 + b.p) * .35;
+    if (b.y > H + 20) b.y = -10;
+    if (Math.abs(sv) > 3) { cx.strokeStyle = `rgba(220,255,252,${Math.min(.5, Math.abs(sv) * .02)})`; cx.beginPath(); cx.moveTo(b.x, b.y); cx.lineTo(b.x, b.y + Math.max(-70, Math.min(70, sv * b.r * .7))); cx.stroke(); }
+    if (ptr.on) { const dx = b.x - ptr.x, dy = b.y - ptr.y, d2 = dx * dx + dy * dy; if (d2 < 9000) { b.x += dx / Math.sqrt(d2 + 1) * 1.6; b.y += dy / Math.sqrt(d2 + 1) * 1.6; } }
+    if (b.y < -10) { b.y = H + 10; b.x = rnd(0, W); }
+    cx.strokeStyle = `rgba(220,255,252,${.45 - dark * .2})`; cx.beginPath(); cx.arc(b.x, b.y, b.r, 0, 6.3); cx.stroke();
+    cx.fillStyle = 'rgba(255,255,255,.5)'; cx.beginPath(); cx.arc(b.x - b.r * .35, b.y - b.r * .35, b.r * .22, 0, 6.3); cx.fill();
+  }
+  // marine snow, turning bioluminescent in the dark
+  cx.save(); cx.globalCompositeOperation = 'lighter';
+  for (const s of snow) {
+    s.y += s.v - sv * s.r * .12; s.x += Math.sin(t * .6 + s.p) * .25; if (s.y > H + 5) { s.y = -5; s.x = rnd(0, W); } else if (s.y < -5) s.y = H + 5;
+    const tw = .5 + .5 * Math.sin(t * 2 + s.p * 3);
+    if (dark > .25) { cx.shadowBlur = 12; cx.shadowColor = s.h; cx.fillStyle = s.h; cx.globalAlpha = (.25 + tw * .7) * dark; }
+    else { cx.shadowBlur = 0; cx.fillStyle = '#dffcff'; cx.globalAlpha = .28; }
+    cx.beginPath(); cx.arc(s.x, s.y, s.r * (dark > .25 ? 1 + tw * .5 : 1), 0, 6.3); cx.fill();
+  }
+  cx.restore();
+  // schools of fish: flee the pointer, scatter on click
+  const fa = Math.max(0, Math.min(1, (frac - .03) * 9));
+  if (fa > 0) for (const f of fish) {
+    f.x += f.dir * f.v + f.fx; f.y += f.fy - sv * .2; f.fx *= .94; f.fy *= .94;
+    if (ptr.on) { const dx = f.x - ptr.x, dy = f.y - ptr.y, d2 = dx * dx + dy * dy; if (d2 < 16000) { const d = Math.sqrt(d2) + 1; f.fx += dx / d * .5; f.fy += dy / d * .5; } }
+    if (f.x > W + 60) f.x = -60; else if (f.x < -60) f.x = W + 60;
+    if (f.y > H + 40) f.y = -40; else if (f.y < -40) f.y = H + 40;
+    const wag = Math.sin(t * 9 + f.p), s = f.s;
+    cx.save(); cx.translate(f.x, f.y + Math.sin(t * 1.3 + f.p) * 6); cx.scale(f.dir, 1); cx.rotate(Math.atan2(f.fy, 4));
+    cx.globalAlpha = fa * (.38 + dark * .5); cx.fillStyle = f.h; if (dark > .4) { cx.shadowBlur = 10; cx.shadowColor = f.h; }
+    cx.beginPath(); cx.ellipse(0, 0, s, s * .38, 0, 0, 6.3); cx.fill();
+    cx.beginPath(); cx.moveTo(-s * .8, 0); cx.lineTo(-s * 1.7, -s * .5 + wag * s * .25); cx.lineTo(-s * 1.7, s * .5 + wag * s * .25); cx.fill();
+    cx.restore();
+  }
+  // jellyfish drift up once the light fades
+  const ja = Math.max(0, Math.min(1, (frac - .2) * 3.5));
+  if (ja > 0) { cx.save(); cx.globalCompositeOperation = 'lighter'; for (const j of jellies) { j.y -= j.v * (1.2 + Math.sin(t * 1.6 + j.p)); if (j.y < -j.s * 4) { j.y = H + j.s * 3; j.x = rnd(.08, .92) * W; } jelly(j, t, ja * .8); } cx.restore(); }
+  // an anglerfish patrols the deep
+  const aa = Math.max(0, Math.min(1, (frac - .55) * 5));
+  if (aa > 0) {
+    angler.x += angler.dir * .8;
+    if (angler.x > W + 450) { angler.dir = -1; angler.y = rnd(.25, .8) * H; } else if (angler.x < -450) { angler.dir = 1; angler.y = rnd(.25, .8) * H; }
+    drawAngler(t, aa);
+  }
+  // sonar shockwaves and bubble bursts
+  cx.save(); cx.globalCompositeOperation = 'lighter';
+  rings = rings.filter(r => r.r < 440);
+  for (const r of rings) {
+    r.r += 7; const a = 1 - r.r / 440;
+    cx.strokeStyle = `rgba(92,242,224,${a * .8})`; cx.lineWidth = 2 + a * 3; cx.beginPath(); cx.arc(r.x, r.y, r.r, 0, 6.3); cx.stroke();
+    cx.strokeStyle = `rgba(255,184,74,${a * .55})`; cx.lineWidth = 1; cx.beginPath(); cx.arc(r.x, r.y, r.r * .6, 0, 6.3); cx.stroke();
+  }
+  sparks = sparks.filter(s => s.a > .03);
+  cx.lineWidth = 1;
+  for (const s of sparks) {
+    s.x += s.vx; s.y += s.vy - sv * .3; s.vy -= .025; s.vx *= .97; s.a *= .965;
+    cx.strokeStyle = `rgba(220,255,252,${s.a})`; cx.beginPath(); cx.arc(s.x, s.y, s.r, 0, 6.3); cx.stroke();
+  }
+  cx.restore();
+  // dive light follows the pointer, stronger as it gets darker
+  if (ptr.on && dark > .1) {
+    const g = cx.createRadialGradient(ptr.x, ptr.y, 0, ptr.x, ptr.y, 230);
+    g.addColorStop(0, `rgba(255,200,110,${.2 * dark})`); g.addColorStop(1, 'rgba(255,200,110,0)');
+    cx.save(); cx.globalCompositeOperation = 'lighter'; cx.fillStyle = g; cx.fillRect(ptr.x - 230, ptr.y - 230, 460, 460); cx.restore();
+  }
+  if (!REDUCED) requestAnimationFrame(draw);
+}
+size(); school(); addEventListener('resize', () => { size(); school(); if (REDUCED) draw(0); });
+if (REDUCED) { addEventListener('scroll', () => draw(0), { passive: true }); draw(0); } else requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
