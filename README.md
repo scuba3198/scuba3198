@@ -3,15 +3,17 @@
 
 ### Things I built from nothing
 
-| Project | What it does | Built with |
-| --- | --- | --- |
-| [Frostbyte](https://github.com/scuba3198/Frostbyte) | Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI | C# |
-| [tms-captcha](https://github.com/scuba3198/tms-captcha) | Browser extension that solves NEPSE TMS captchas locally with a statistical approach | TypeScript |
-| [Geoflux](https://github.com/scuba3198/Geoflux) | High-performance, interactive generative art sandbox | TypeScript |
-| [cure-evolution](https://github.com/scuba3198/cure-evolution) | Interactive story of cumulative reciprocity in evolving populations | ReScript |
-| [brave-feature-control](https://github.com/scuba3198/brave-feature-control) | Native Windows panel to toggle optional Brave features with reversible policies | PowerShell |
-| [fmhy-sync](https://github.com/scuba3198/fmhy-sync) | Local-only Chromium extension for syncing FMHY starred bookmarks | ReScript |
-| [linkbridge](https://github.com/scuba3198/linkbridge) | Lightweight Chromium extension that resolves FileCrypt container links | JavaScript |
-| [reciprocity-tracker](https://github.com/scuba3198/reciprocity-tracker) | Small, dependency-free CURE (cumulative reciprocity) tracker | JavaScript |
+| Project | What it does | Built with | ★ |
+| --- | --- | --- | --- |
+| [Frostbyte](https://github.com/scuba3198/Frostbyte) | Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI. | C# | 2 |
+| [tms-captcha](https://github.com/scuba3198/tms-captcha) | Browser extension to locally solve captchas on NEPSE TMS using a statistical approach. | TypeScript | 2 |
+| [reciprocity-tracker](https://github.com/scuba3198/reciprocity-tracker) | A small, dependency-free CURE (cumulative reciprocity) tracker. | JavaScript | 1 |
+| [salary-calculator](https://github.com/scuba3198/salary-calculator) | A React, Vite and Supabase workday and earnings tracker. | TypeScript | 1 |
+| [pte-class-coverage](https://github.com/scuba3198/pte-class-coverage) | A local-first tracker for PTE Academic class coverage. | TypeScript | 1 |
+| [brave-feature-control](https://github.com/scuba3198/brave-feature-control) | A native Windows panel to toggle optional Brave features with reversible policies, presets and backups. | PowerShell | 1 |
+| [loan-calculator](https://github.com/scuba3198/loan-calculator) | A browser-based loan calculator. | ReScript | 1 |
+| [mumukshu-portfolio](https://github.com/scuba3198/mumukshu-portfolio) | My portfolio site, with a minimalist aesthetic. | TypeScript | 1 |
 
-<a href="https://scuba3198.github.io/scuba3198/"><img src="assets/abyss.svg" width="100%" alt="Achievements: Pull Shark x2, Pair Extraordinaire, YOLO. Open the full interactive dive."></a>
+<a href="https://scuba3198.github.io/scuba3198/"><img src="assets/abyss.svg" width="100%" alt="Most starred: Wand-Enhancer (5 stars, 2 forks), Frostbyte (2 stars, 0 forks), allow-copy-plus-origin (2 stars, 0 forks). Open the full interactive dive."></a>
+
+<sub>This profile rebuilds itself from live GitHub data. Source: <a href="scripts/build.py">scripts/build.py</a>.</sub>

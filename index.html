@@ -178,17 +178,18 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .card footer { display: flex; justify-content: space-between; gap: 10px; font: 400 12px/1 var(--mono); color: var(--fg-dim); }
 .card footer .lg { color: var(--c); display: inline-flex; gap: 7px; align-items: center; }
 .card footer .lg::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
-.card.pinned { grid-column: 1 / -1; padding: clamp(22px, 3.4vw, 36px); border-color: color-mix(in srgb, var(--lure) 60%, transparent); }
-.card.pinned h3 { font-size: clamp(1.8rem, 5vw, 3rem); margin-top: 8px; }
-.card.pinned p { font-size: clamp(1rem, 1.8vw, 1.2rem); max-width: 52ch; }
+.card.feature { grid-column: 1 / -1; padding: clamp(22px, 3.4vw, 36px); }
+.card.pinned { border-color: color-mix(in srgb, var(--lure) 60%, transparent); }
+.card.feature h3 { font-size: clamp(1.8rem, 5vw, 3rem); margin-top: 8px; }
+.card.feature p { font-size: clamp(1rem, 1.8vw, 1.2rem); max-width: 52ch; }
 .pin { font: 500 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--lure); }
 
 /* ---------- timeline ---------- */
 .log { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); padding: clamp(16px, 3vw, 30px); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-.cols { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 2px; align-items: end; min-height: 300px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; align-items: end; min-height: 300px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
 .col { display: flex; flex-direction: column-reverse; align-items: center; gap: 7px; min-width: 0; }
 .bub {
-  width: clamp(20px, 5.4vw, 34px); aspect-ratio: 1; border-radius: 50%; padding: 0; cursor: pointer;
+  width: clamp(16px, 4.6vw, 34px); aspect-ratio: 1; border-radius: 50%; padding: 0; cursor: pointer;
   border: 1.5px solid var(--c); background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.75), color-mix(in srgb, var(--c) 55%, transparent) 38%, color-mix(in srgb, var(--c) 14%, transparent) 72%);
   animation: bob 4s ease-in-out infinite; animation-delay: calc(var(--k) * -0.37s);
   transition: box-shadow .2s, scale .2s;
@@ -196,7 +197,7 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .bub:hover, .bub[aria-pressed="true"] { box-shadow: 0 0 0 3px rgba(255,255,255,.2), 0 0 26px var(--c); scale: 1.18; }
 .bub.fork { border-style: dashed; background: color-mix(in srgb, var(--c) 12%, transparent); }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-.months { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 2px; margin-top: 8px; font: 400 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-dim); text-align: center; }
+.months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; margin-top: 8px; font: 400 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-dim); text-align: center; }
 .months b { display: block; color: var(--fg); font-weight: 500; font-size: 13px; }
 .readout { margin-top: 22px; display: grid; gap: 4px; min-height: 5.2em; }
 .readout .when { font: 400 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--glow); }
@@ -291,10 +292,10 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
       <h1 aria-label="scuba3198" id="title">scuba3198</h1>
       <p class="pitch">I build small, sharp tools: browser extensions, Windows utilities and trading helpers for <b>NEPSE</b>. Scroll to dive through all of it.</p>
       <ul class="stats">
-        <li><b data-count="28">28</b><span>public repos</span></li>
-        <li><b data-count="20">20</b><span>built from scratch</span></li>
-        <li><b data-count="7">7</b><span>languages</span></li>
-        <li><b data-count="26">26</b><span>stars earned</span></li>
+        <li><b id="s-repos">28</b><span>public repos</span></li>
+        <li><b id="s-own">20</b><span>built from scratch</span></li>
+        <li><b id="s-langs">7</b><span>languages</span></li>
+        <li><b id="s-stars">26</b><span>stars earned</span></li>
       </ul>
       <div class="cta">
         <a class="btn" href="https://github.com/scuba3198">github.com/scuba3198 ↗</a>
@@ -308,8 +309,8 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
   <section class="zone" data-zone>
     <div class="wrap">
       <p class="zone-tag reveal">Sunlight zone <em>0 – 200 m</em></p>
-      <h2 class="reveal">Seven languages, one diver.</h2>
-      <p class="lede reveal">TypeScript does the heavy lifting, but I reach for ReScript, Rust and C# when the job calls for it. Counts are the primary language of each of my 28 repos.</p>
+      <h2 class="reveal" id="h-langs">Seven languages, one diver.</h2>
+      <p class="lede reveal" id="p-langs">TypeScript does the heavy lifting, but I reach for ReScript, Rust and C# when the job calls for it. Counts are the primary language of each of my 28 repos.</p>
       <div class="stack reveal" id="stack" role="img" aria-label="Share of repositories by primary language"></div>
       <ul class="langs" id="langs"></ul>
     </div>
@@ -318,7 +319,7 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
   <section class="zone" data-zone>
     <div class="wrap">
       <p class="zone-tag reveal">Twilight zone <em>200 – 1,000 m</em></p>
-      <h2 class="reveal">Twenty things I built from nothing.</h2>
+      <h2 class="reveal" id="h-own">Twenty things I built from nothing.</h2>
       <p class="lede reveal">Every card is an original repo. Filter by language, hover to light one up, click to open it on GitHub.</p>
       <div class="filters reveal" id="filters" role="group" aria-label="Filter projects by language"></div>
       <div class="grid" id="grid"></div>
@@ -328,13 +329,13 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
   <section class="zone" data-zone>
     <div class="wrap">
       <p class="zone-tag reveal">Midnight zone <em>1,000 – 4,000 m</em></p>
-      <h2 class="reveal">The 2026 dive log.</h2>
-      <p class="lede reveal">Each bubble is a repo, placed in the month it was last updated. October was the busiest month, with seven. Tap a bubble to inspect it.</p>
+      <h2 class="reveal">Twelve months of dives.</h2>
+      <p class="lede reveal" id="p-log">Each bubble is a repo, placed in the month it was last updated. October was the busiest month, with seven. Tap a bubble to inspect it.</p>
       <div class="log reveal">
         <div class="cols" id="cols"></div>
         <div class="months" id="months"></div>
         <div class="readout" id="readout" aria-live="polite"></div>
-        <p class="key">Solid bubble: original repo · dashed bubble: fork · colour: language</p>
+        <p class="key" id="k-log">Solid bubble: original repo · dashed bubble: fork · colour: language</p>
       </div>
     </div>
   </section>
@@ -368,8 +369,8 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
         </div>
       </div>
 
-      <h2 class="sub reveal">Eight forks I keep in the tank.</h2>
-      <p class="lede reveal">Other people's projects I've patched, extended or kept close, ranked by the stars and forks each one has picked up. Wand-Enhancer is my most-starred repo, with 5 stars and 2 forks of its own.</p>
+      <h2 class="sub reveal" id="h-forks">Eight forks I keep in the tank.</h2>
+      <p class="lede reveal" id="p-forks">Other people's projects I've patched, extended or kept close, ranked by the stars and forks each one has picked up. Wand-Enhancer is my most-starred repo, with 5 stars and 2 forks of its own.</p>
       <ul class="forks" id="forks"></ul>
     </div>
   </section>
@@ -380,12 +381,12 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
     <div class="wrap">
       <p class="zone-tag reveal" style="justify-content:center">Hadal zone <em>Challenger Deep · 10,935 m</em></p>
       <h2 class="reveal">You hit the seabed.</h2>
-      <p class="reveal">That's everything public as of 14 November 2026. Come back up and follow along for the next dive.</p>
+      <p class="reveal" id="p-bed">That's everything public as of 14 November 2026. Come back up and follow along for the next dive.</p>
       <div class="exit reveal">
         <a class="btn" href="https://github.com/scuba3198">Follow scuba3198 on GitHub ↗</a>
         <button class="btn up" id="surface" type="button">Emergency ascent ↑</button>
       </div>
-      <p class="src">Figures read from the public GitHub profile on 14 Nov 2026. Stars earned sums the star counts shown on each repo card.</p>
+      <p class="src" id="p-src">Figures read from the public GitHub profile on 14 Nov 2026. Stars earned sums the star counts shown on each repo card.</p>
     </div>
   </footer>
 </div>
@@ -401,44 +402,55 @@ const LANG = {
   Rust:       { c: 'var(--rust)', hex: '#f0a878', note: 'Native desktop utilities' },
   'C#':       { c: 'var(--cs)', hex: '#63d977', note: 'Windows GUI apps' },
   PowerShell: { c: 'var(--ps)', hex: '#b693ff', note: 'Windows policy panel' },
-  Shell:      { c: 'var(--sh)', hex: '#8fe6cb', note: 'Config scripts' }
+  Shell:      { c: 'var(--sh)', hex: '#8fe6cb', note: 'Config scripts' },
+  Other:      { c: '#8aa3ad', hex: '#8aa3ad', note: 'No primary language' }
 };
-// n: name, l: language, s: stars, d: last updated (2026), t: description, f: forked from
-const R = [
-  { n: 'Frostbyte', l: 'C#', s: 2, d: '11-14', pin: 1, t: 'Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI.' },
-  { n: 'nepse-momentum-trader', l: 'JavaScript', s: 1, d: '11-14' },
-  { n: 'Stremio-Kai', l: 'JavaScript', s: 0, d: '11-14', f: 'allecsc/Stremio-Kai', t: 'Personal fork with auto-applied patches.' },
-  { n: 'reciprocity-tracker', l: 'JavaScript', s: 1, d: '11-13', t: 'A small, dependency-free CURE (cumulative reciprocity) tracker.' },
-  { n: 'fujiang-pojia', l: 'JavaScript', s: 0, d: '11-09', f: 'java99999/java-pojia', t: 'DeepSeek Harness plugin.' },
-  { n: 'essay-architect-pro', l: 'TypeScript', s: 0, d: '10-28', t: 'An AI writing suite for IELTS and PTE essays.' },
-  { n: 'pte-class-coverage', l: 'TypeScript', s: 1, d: '10-28', t: 'A local-first tracker for PTE Academic class coverage.' },
-  { n: 'salary-calculator', l: 'TypeScript', s: 1, d: '10-28', t: 'A React, Vite and Supabase workday and earnings tracker.' },
-  { n: 'chrome-extension-source-viewer', l: 'JavaScript', s: 1, d: '10-26' },
-  { n: 'oled-wallpaper-automator', l: 'Rust', s: 1, d: '10-23' },
-  { n: 'linkbridge', l: 'JavaScript', s: 0, d: '10-17', t: 'Resolve FileCrypt container links after a manual CAPTCHA and copy destinations to the clipboard. A lightweight Chromium extension.' },
-  { n: 'brave-feature-control', l: 'PowerShell', s: 1, d: '10-13', t: 'A native Windows panel to toggle optional Brave features with reversible policies, presets and backups.' },
-  { n: 'cure-evolution', l: 'ReScript', s: 0, d: '09-30', t: 'An interactive ReScript and React story of cumulative reciprocity in evolving populations.' },
-  { n: 'Wand-Enhancer', l: 'C#', s: 5, fk: 2, d: '09-11', f: 'byst4nder/Wemod-Patcher', t: 'Advanced UX and interoperability extension for the Wand (WeMod) app.' },
-  { n: 'loan-calculator', l: 'ReScript', s: 1, d: '09-05', t: 'A browser-based loan calculator.' },
-  { n: 'mumukshu-portfolio', l: 'TypeScript', s: 1, d: '08-19', t: 'My portfolio site, with a minimalist aesthetic.' },
-  { n: 'bionic-reading', l: 'TypeScript', s: 1, d: '08-11' },
-  { n: 'allow-copy-plus-origin', l: 'TypeScript', s: 2, d: '08-10' },
-  { n: 'subagents_configs', l: 'Shell', s: 0, d: '08-03', f: 'nsEytgXm/subagents_configs' },
-  { n: 'fmhy-sync', l: 'ReScript', s: 1, d: '08-01', t: 'Local-only Chromium extension for syncing FMHY starred bookmarks.' },
-  { n: 'OpenSearch-Dashboards', l: 'TypeScript', s: 0, d: '06-25', f: 'opensearch-project/OpenSearch-Dashboards', t: 'Open source visualization dashboards for OpenSearch.' },
-  { n: 'extensity-rust', l: 'Rust', s: 1, d: '06-12' },
-  { n: 'EmpressNfo', l: 'JavaScript', s: 1, d: '05-29', f: 'jayantchandra/EmpressNfo', t: "An index of Empress' NFO collections." },
-  { n: 'essay-architect', l: 'JavaScript', s: 1, d: '04-28', t: 'A structured writing assistant for IELTS and PTE essays.' },
-  { n: 'focalboard', l: 'TypeScript', s: 0, d: '03-02', f: 'mattermost-community/focalboard', t: 'Open source, self-hosted alternative to Trello, Notion and Asana.' },
-  { n: 'responsively-app', l: 'TypeScript', s: 0, d: '02-27', f: 'responsively-org/responsively-app', t: 'A modified web browser that helps in responsive web development.' },
-  { n: 'Geoflux', l: 'TypeScript', s: 1, d: '02-22', t: 'A high-performance, interactive generative art sandbox built with React and Vite.' },
-  { n: 'tms-captcha', l: 'TypeScript', s: 2, d: '02-20', t: 'Browser extension to locally solve captchas on NEPSE TMS using a statistical approach.' }
-];
+const LOGIN = 'scuba3198';
+// Built-in snapshot: shown instantly, then replaced by data.json and the live GitHub API.
+// n: name, l: language, s: stars, fk: forks, d: last push, t: description, f: forked from
+const SNAP = { generated: "2026-11-14T00:00:00Z", pinned: ["Frostbyte"], repos: [
+  {"n": "Frostbyte", "l": "C#", "s": 2, "fk": 0, "d": "2026-11-14T00:00:00Z", "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI.", "fork": false, "f": ""},
+  {"n": "nepse-momentum-trader", "l": "JavaScript", "s": 1, "fk": 0, "d": "2026-11-14T00:00:00Z", "t": "", "fork": false, "f": ""},
+  {"n": "Stremio-Kai", "l": "JavaScript", "s": 0, "fk": 0, "d": "2026-11-14T00:00:00Z", "t": "Personal fork with auto-applied patches.", "fork": true, "f": "allecsc/Stremio-Kai"},
+  {"n": "reciprocity-tracker", "l": "JavaScript", "s": 1, "fk": 0, "d": "2026-11-13T00:00:00Z", "t": "A small, dependency-free CURE (cumulative reciprocity) tracker.", "fork": false, "f": ""},
+  {"n": "fujiang-pojia", "l": "JavaScript", "s": 0, "fk": 0, "d": "2026-11-09T00:00:00Z", "t": "DeepSeek Harness plugin.", "fork": true, "f": "java99999/java-pojia"},
+  {"n": "essay-architect-pro", "l": "TypeScript", "s": 0, "fk": 0, "d": "2026-10-28T00:00:00Z", "t": "An AI writing suite for IELTS and PTE essays.", "fork": false, "f": ""},
+  {"n": "pte-class-coverage", "l": "TypeScript", "s": 1, "fk": 0, "d": "2026-10-28T00:00:00Z", "t": "A local-first tracker for PTE Academic class coverage.", "fork": false, "f": ""},
+  {"n": "salary-calculator", "l": "TypeScript", "s": 1, "fk": 0, "d": "2026-10-28T00:00:00Z", "t": "A React, Vite and Supabase workday and earnings tracker.", "fork": false, "f": ""},
+  {"n": "chrome-extension-source-viewer", "l": "JavaScript", "s": 1, "fk": 0, "d": "2026-10-26T00:00:00Z", "t": "", "fork": false, "f": ""},
+  {"n": "oled-wallpaper-automator", "l": "Rust", "s": 1, "fk": 0, "d": "2026-10-23T00:00:00Z", "t": "", "fork": false, "f": ""},
+  {"n": "linkbridge", "l": "JavaScript", "s": 0, "fk": 0, "d": "2026-10-17T00:00:00Z", "t": "Resolve FileCrypt container links after a manual CAPTCHA and copy destinations to the clipboard. A lightweight Chromium extension.", "fork": false, "f": ""},
+  {"n": "brave-feature-control", "l": "PowerShell", "s": 1, "fk": 0, "d": "2026-10-13T00:00:00Z", "t": "A native Windows panel to toggle optional Brave features with reversible policies, presets and backups.", "fork": false, "f": ""},
+  {"n": "cure-evolution", "l": "ReScript", "s": 0, "fk": 0, "d": "2026-09-30T00:00:00Z", "t": "An interactive ReScript and React story of cumulative reciprocity in evolving populations.", "fork": false, "f": ""},
+  {"n": "Wand-Enhancer", "l": "C#", "s": 5, "fk": 2, "d": "2026-09-11T00:00:00Z", "t": "Advanced UX and interoperability extension for the Wand (WeMod) app.", "fork": true, "f": "byst4nder/Wemod-Patcher"},
+  {"n": "loan-calculator", "l": "ReScript", "s": 1, "fk": 0, "d": "2026-09-05T00:00:00Z", "t": "A browser-based loan calculator.", "fork": false, "f": ""},
+  {"n": "mumukshu-portfolio", "l": "TypeScript", "s": 1, "fk": 0, "d": "2026-08-19T00:00:00Z", "t": "My portfolio site, with a minimalist aesthetic.", "fork": false, "f": ""},
+  {"n": "bionic-reading", "l": "TypeScript", "s": 1, "fk": 0, "d": "2026-08-11T00:00:00Z", "t": "", "fork": false, "f": ""},
+  {"n": "allow-copy-plus-origin", "l": "TypeScript", "s": 2, "fk": 0, "d": "2026-08-10T00:00:00Z", "t": "", "fork": false, "f": ""},
+  {"n": "subagents_configs", "l": "Shell", "s": 0, "fk": 0, "d": "2026-08-03T00:00:00Z", "t": "", "fork": true, "f": "nsEytgXm/subagents_configs"},
+  {"n": "fmhy-sync", "l": "ReScript", "s": 1, "fk": 0, "d": "2026-08-01T00:00:00Z", "t": "Local-only Chromium extension for syncing FMHY starred bookmarks.", "fork": false, "f": ""},
+  {"n": "OpenSearch-Dashboards", "l": "TypeScript", "s": 0, "fk": 0, "d": "2026-06-25T00:00:00Z", "t": "Open source visualization dashboards for OpenSearch.", "fork": true, "f": "opensearch-project/OpenSearch-Dashboards"},
+  {"n": "extensity-rust", "l": "Rust", "s": 1, "fk": 0, "d": "2026-06-12T00:00:00Z", "t": "", "fork": false, "f": ""},
+  {"n": "EmpressNfo", "l": "JavaScript", "s": 1, "fk": 0, "d": "2026-05-29T00:00:00Z", "t": "An index of Empress' NFO collections.", "fork": true, "f": "jayantchandra/EmpressNfo"},
+  {"n": "essay-architect", "l": "JavaScript", "s": 1, "fk": 0, "d": "2026-04-28T00:00:00Z", "t": "A structured writing assistant for IELTS and PTE essays.", "fork": false, "f": ""},
+  {"n": "focalboard", "l": "TypeScript", "s": 0, "fk": 0, "d": "2026-03-02T00:00:00Z", "t": "Open source, self-hosted alternative to Trello, Notion and Asana.", "fork": true, "f": "mattermost-community/focalboard"},
+  {"n": "responsively-app", "l": "TypeScript", "s": 0, "fk": 0, "d": "2026-02-27T00:00:00Z", "t": "A modified web browser that helps in responsive web development.", "fork": true, "f": "responsively-org/responsively-app"},
+  {"n": "Geoflux", "l": "TypeScript", "s": 1, "fk": 0, "d": "2026-02-22T00:00:00Z", "t": "A high-performance, interactive generative art sandbox built with React and Vite.", "fork": false, "f": ""},
+  {"n": "tms-captcha", "l": "TypeScript", "s": 2, "fk": 0, "d": "2026-02-20T00:00:00Z", "t": "Browser extension to locally solve captchas on NEPSE TMS using a statistical approach.", "fork": false, "f": ""}
+] };
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const fmt = d => MON[+d.slice(0, 2) - 1] + ' ' + (+d.slice(3)) + ', 2026';
+const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WORDS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen','Twenty'];
+const word = n => WORDS[n] || String(n);
+const s_ = n => n === 1 ? '' : 's';
+const fmt = d => { const x = new Date(d); return `${MON[x.getUTCMonth()]} ${x.getUTCDate()}, ${x.getUTCFullYear()}`; };
+const short = d => { const x = new Date(d); return `${MON[x.getUTCMonth()]} ${x.getUTCDate()}` + (x.getUTCFullYear() === new Date().getUTCFullYear() ? '' : ` ${x.getUTCFullYear()}`); };
 const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
 const $ = id => document.getElementById(id);
 const stars = s => s ? '★ ' + s : '';
+const say = (id, t) => { const n = $(id); n.textContent = t; n.dataset.t = t; if (n.hasAttribute('aria-label')) n.setAttribute('aria-label', t); };
+const EXTRA = ['#7fd4ff', '#ffa3d1', '#c9f27a', '#ffc46b', '#9db4ff'];
+const lang = l => LANG[l] || (LANG[l] = { c: EXTRA[Object.keys(LANG).length % EXTRA.length], note: '' });
 
 /* hero title letters */
 const title = $('title');
@@ -448,104 +460,157 @@ title.textContent = '';
   s.style.setProperty('--i', i); s.setAttribute('aria-hidden', 'true'); title.append(s);
 });
 
-/* counters */
-if (!REDUCED) document.querySelectorAll('[data-count]').forEach(b => {
-  const end = +b.dataset.count, t0 = performance.now() + 500;
-  b.textContent = '0';
+/* counters: animate from whatever is showing to the new figure */
+const shown = {};
+function count(id, end) {
+  const b = $(id); if (shown[id] === end) return;
+  const from = shown[id] ?? 0, first = shown[id] == null; shown[id] = end;
+  if (REDUCED) { b.textContent = end; return; }
+  const t0 = performance.now() + (first ? 500 : 0);
+  if (first) b.textContent = '0';
   const step = t => {
+    if (shown[id] !== end) return;
     const p = Math.min(1, Math.max(0, (t - t0) / 1400));
-    b.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
+    b.textContent = Math.round(from + (end - from) * (1 - Math.pow(1 - p, 3)));
     if (p < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
-});
-
-/* language mix */
-const counts = {};
-R.forEach(r => { (counts[r.l] ??= { all: 0, own: 0 }); counts[r.l].all++; if (!r.f) counts[r.l].own++; });
-const order = Object.keys(counts).sort((a, b) => counts[b].all - counts[a].all);
-order.forEach((l, i) => {
-  const seg = el('i'); seg.style.cssText = `--n:${counts[l].all};--c:${LANG[l].c};--i:${i}`; seg.title = `${l}: ${counts[l].all}`;
-  $('stack').append(seg);
-  const li = el('li', 'reveal'); li.style.setProperty('--c', LANG[l].c); li.style.setProperty('--i', i);
-  const name = el('span', 'ln', l); name.append(el('small', '', LANG[l].note));
-  li.append(el('span', 'dot'), name, el('span', 'ct', String(counts[l].all).padStart(2, '0')));
-  $('langs').append(li);
-});
-
-/* project cards */
-const own = R.filter(r => !r.f);
-const grid = $('grid'), filters = $('filters');
-function card(r, i) {
-  const a = el('a', 'card' + (r.pin ? ' pinned' : '')); a.href = GH + r.n; a.dataset.lang = r.l;
-  a.style.setProperty('--c', LANG[r.l].c); a.style.setProperty('--i', i % 6);
-  const head = el('div');
-  if (r.pin) head.append(el('div', 'pin', 'Pinned'));
-  head.append(el('h3', '', r.n));
-  const p = r.t ? el('p', '', r.t) : el('p', 'none', 'No description on GitHub yet');
-  const f = el('footer'); f.append(el('span', 'lg', r.l), el('span', '', [stars(r.s), fmt(r.d).replace(', 2026', '')].filter(Boolean).join(' · ')));
-  a.append(head, p, f);
-  a.addEventListener('pointermove', e => {
-    const b = a.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
-    a.style.setProperty('--mx', x * 100 + '%'); a.style.setProperty('--my', y * 100 + '%');
-    if (!REDUCED && e.pointerType === 'mouse') { a.style.setProperty('--ry', (x - .5) * 9 + 'deg'); a.style.setProperty('--rx', (.5 - y) * 9 + 'deg'); }
-  });
-  a.addEventListener('pointerleave', () => { a.style.setProperty('--rx', '0deg'); a.style.setProperty('--ry', '0deg'); });
-  return a;
 }
-own.forEach((r, i) => grid.append(card(r, i)));
-['All', ...order.filter(l => counts[l].own)].forEach(l => {
-  const b = el('button', 'chip', l === 'All' ? `All ${own.length}` : `${l} ${counts[l].own}`);
-  b.type = 'button'; b.id = 'f-' + l.replace(/\W/g, 's'); b.setAttribute('aria-pressed', l === 'All');
-  b.addEventListener('click', () => {
-    filters.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
-    let k = 0;
-    grid.querySelectorAll('.card').forEach(c => {
-      const show = l === 'All' || c.dataset.lang === l;
-      c.hidden = !show;
-      if (show) { c.classList.remove('in'); c.style.setProperty('--i', k++); void c.offsetWidth; c.classList.add('in'); }
+
+/* everything data-driven is (re)built here */
+let R = [], lastKey = '';
+function render(D) {
+  const src = D.live ? 'Live from the GitHub API' : 'Snapshot';
+  say('p-bed', `That's everything public as of ${fmt(D.generated)}. Come back up and follow along for the next dive.`);
+  say('p-src', `${src}, ${fmt(D.generated)}. Stars earned sums the stars across every public repo.`);
+  const all = D.repos.filter(r => r.n.toLowerCase() !== LOGIN).sort((a, b) => b.d.localeCompare(a.d) || a.n.localeCompare(b.n));
+  const pinned = D.pinned || [];
+  const key = JSON.stringify([pinned, all.map(r => [r.n, r.l, r.s, r.fk, r.d.slice(0, 10), r.t, r.fork, r.f])]);
+  if (key === lastKey) return;
+  lastKey = key; R = all;
+  const own = R.filter(r => !r.fork), forks = R.filter(r => r.fork);
+
+  /* language mix */
+  const counts = {};
+  R.forEach(r => { const c = (counts[r.l] ??= { all: 0, own: 0 }); c.all++; if (!r.fork) c.own++; });
+  const order = Object.keys(counts).sort((a, b) => counts[b].all - counts[a].all || a.localeCompare(b));
+  const nl = order.filter(l => l !== 'Other').length;
+  count('s-repos', R.length); count('s-own', own.length); count('s-langs', nl); count('s-stars', R.reduce((a, r) => a + r.s, 0));
+  say('h-langs', `${word(nl)} language${s_(nl)}, one diver.`);
+  say('p-langs', `${order[0] || 'Nothing'} does the heavy lifting. Counts are the primary language of each of my ${R.length} public repos.`);
+  $('stack').textContent = ''; $('langs').textContent = '';
+  order.forEach((l, i) => {
+    const seg = el('i'); seg.style.cssText = `--n:${counts[l].all};--c:${lang(l).c};--i:${i}`; seg.title = `${l}: ${counts[l].all}`;
+    $('stack').append(seg);
+    const li = el('li', 'reveal'); li.style.setProperty('--c', lang(l).c); li.style.setProperty('--i', i);
+    const name = el('span', 'ln', l);
+    name.append(el('small', '', lang(l).note || `${counts[l].own} original, ${counts[l].all - counts[l].own} forked`));
+    li.append(el('span', 'dot'), name, el('span', 'ct', String(counts[l].all).padStart(2, '0')));
+    $('langs').append(li);
+  });
+
+  /* project cards: pinned first, then most recently pushed */
+  const grid = $('grid'), filters = $('filters');
+  const rank = r => { const i = pinned.indexOf(r.n); return i < 0 ? 99 : i; };
+  const cards = [...own].sort((a, b) => rank(a) - rank(b));
+  say('h-own', `${word(own.length)} thing${s_(own.length)} I built from nothing.`);
+  grid.textContent = ''; filters.textContent = '';
+  cards.forEach((r, i) => {
+    const pin = pinned.includes(r.n);
+    const a = el('a', 'card' + (pin ? ' pinned' : '') + (pin && i === 0 ? ' feature' : '')); a.href = GH + r.n; a.dataset.lang = r.l;
+    a.style.setProperty('--c', lang(r.l).c); a.style.setProperty('--i', i % 6);
+    const head = el('div');
+    if (pin) head.append(el('div', 'pin', 'Pinned'));
+    head.append(el('h3', '', r.n));
+    const p = r.t ? el('p', '', r.t) : el('p', 'none', 'No description on GitHub yet');
+    const f = el('footer'); f.append(el('span', 'lg', r.l), el('span', '', [stars(r.s), r.fk ? '⑂ ' + r.fk : '', short(r.d)].filter(Boolean).join(' · ')));
+    a.append(head, p, f);
+    a.addEventListener('pointermove', e => {
+      const b = a.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+      a.style.setProperty('--mx', x * 100 + '%'); a.style.setProperty('--my', y * 100 + '%');
+      if (!REDUCED && e.pointerType === 'mouse') { a.style.setProperty('--ry', (x - .5) * 9 + 'deg'); a.style.setProperty('--rx', (.5 - y) * 9 + 'deg'); }
     });
+    a.addEventListener('pointerleave', () => { a.style.setProperty('--rx', '0deg'); a.style.setProperty('--ry', '0deg'); });
+    grid.append(a);
   });
-  filters.append(b);
-});
-
-/* timeline */
-const cols = $('cols'), months = $('months'), readout = $('readout');
-function inspect(r, btn) {
-  cols.querySelectorAll('.bub').forEach(b => b.setAttribute('aria-pressed', b === btn));
-  readout.textContent = '';
-  const a = el('a', '', r.n); a.href = GH + r.n;
-  readout.append(
-    el('span', 'when', `Last updated ${fmt(r.d)} · ${r.l}${r.f ? ' · fork' : ''}`), a,
-    el('p', 'what', r.t || (r.f ? 'Forked from ' + r.f + '.' : 'No description on GitHub yet.'))
-  );
-}
-let k = 0, firstBtn;
-for (let m = 2; m <= 11; m++) {
-  const col = el('div', 'col');
-  const inM = R.filter(r => +r.d.slice(0, 2) === m).sort((a, b) => a.d.localeCompare(b.d));
-  inM.forEach(r => {
-    const b = el('button', 'bub' + (r.f ? ' fork' : '')); b.type = 'button';
-    b.style.setProperty('--c', LANG[r.l].c); b.style.setProperty('--k', k++);
-    b.setAttribute('aria-label', `${r.n}, updated ${fmt(r.d)}`); b.setAttribute('aria-pressed', 'false');
-    b.addEventListener('click', () => inspect(r, b));
-    b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') inspect(r, b); });
-    if (r.n === 'Frostbyte') firstBtn = [r, b];
-    col.append(b);
+  ['All', ...order.filter(l => counts[l].own)].forEach(l => {
+    const b = el('button', 'chip', l === 'All' ? `All ${own.length}` : `${l} ${counts[l].own}`);
+    b.type = 'button'; b.id = 'f-' + l.replace(/\W/g, 's'); b.setAttribute('aria-pressed', l === 'All');
+    b.addEventListener('click', () => {
+      filters.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+      let k = 0;
+      grid.querySelectorAll('.card').forEach(c => {
+        const show = l === 'All' || c.dataset.lang === l;
+        c.hidden = !show;
+        if (show) { c.classList.remove('in'); c.style.setProperty('--i', k++); void c.offsetWidth; c.classList.add('in'); }
+      });
+    });
+    filters.append(b);
   });
-  cols.append(col);
-  const lab = el('span'); lab.append(el('b', '', String(inM.length)), document.createTextNode(MON[m - 1]));
-  months.append(lab);
-}
-inspect(...firstBtn);
 
-/* forks */
-R.filter(r => r.f).sort((a, b) => (b.s + (b.fk || 0)) - (a.s + (a.fk || 0))).forEach((r, i) => {
-  const li = el('li', 'reveal'); li.style.setProperty('--i', i % 5);
-  const a = el('a'); a.href = GH + r.n;
-  a.append(el('span', 'fn', r.n), el('span', 'from', '⑂ ' + r.f), el('span', 'st', [r.l, stars(r.s), r.fk ? '⑂ ' + r.fk : ''].filter(Boolean).join(' · ')));
-  li.append(a); $('forks').append(li);
-});
+  /* dive log: the last twelve months, by last push */
+  const cols = $('cols'), months = $('months'), readout = $('readout');
+  cols.textContent = ''; months.textContent = '';
+  const inspect = (r, btn) => {
+    cols.querySelectorAll('.bub').forEach(b => b.setAttribute('aria-pressed', b === btn));
+    readout.textContent = '';
+    const a = el('a', '', r.n); a.href = GH + r.n;
+    readout.append(
+      el('span', 'when', `Last pushed ${fmt(r.d)} · ${r.l}${r.fork ? ' · fork' : ''}`), a,
+      el('p', 'what', r.t || (r.f ? 'Forked from ' + r.f + '.' : 'No description on GitHub yet.'))
+    );
+  };
+  const now = new Date(), end = now.getUTCFullYear() * 12 + now.getUTCMonth(), idx = r => { const x = new Date(r.d); return x.getUTCFullYear() * 12 + x.getUTCMonth(); };
+  let k = 0, newest = null, busiest = [0, 0];
+  for (let m = end - 11; m <= end; m++) {
+    const col = el('div', 'col');
+    const inM = R.filter(r => idx(r) === m).sort((a, b) => a.d.localeCompare(b.d));
+    if (inM.length > busiest[0]) busiest = [inM.length, m];
+    inM.forEach(r => {
+      const b = el('button', 'bub' + (r.fork ? ' fork' : '')); b.type = 'button';
+      b.style.setProperty('--c', lang(r.l).c); b.style.setProperty('--k', k++);
+      b.setAttribute('aria-label', `${r.n}, pushed ${fmt(r.d)}`); b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', () => inspect(r, b));
+      b.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') inspect(r, b); });
+      if (!newest || r.d > newest[0].d) newest = [r, b];
+      col.append(b);
+    });
+    cols.append(col);
+    const lab = el('span'); lab.append(el('b', '', String(inM.length)), document.createTextNode(MON[m % 12] + (m % 12 === 0 ? ` '${String(Math.floor(m / 12)).slice(2)}` : '')));
+    months.append(lab);
+  }
+  const older = R.filter(r => idx(r) < end - 11).length;
+  say('p-log', 'Each bubble is a repo, placed in the month of its last push.' + (busiest[0] ? ` ${MONTH[busiest[1] % 12]} was the busiest month, with ${word(busiest[0]).toLowerCase()}.` : '') + ' Tap a bubble to inspect it.');
+  say('k-log', 'Solid bubble: original repo · dashed bubble: fork · colour: language' + (older ? ` · ${older} older repo${s_(older)} not shown` : ''));
+  if (newest) inspect(...newest); else readout.textContent = '';
+
+  /* forks, ranked by stars + forks received */
+  const ranked = [...forks].sort((a, b) => (b.s + b.fk) - (a.s + a.fk));
+  say('h-forks', `${word(forks.length)} fork${s_(forks.length)} I keep in the tank.`);
+  const top = ranked[0];
+  say('p-forks', "Other people's projects I've patched, extended or kept close, ranked by the stars and forks each one has picked up." + (top && top.s + top.fk ? ` ${top.n} leads with ${top.s} star${s_(top.s)} and ${top.fk} fork${s_(top.fk)} of its own.` : ''));
+  $('forks').textContent = '';
+  ranked.forEach((r, i) => {
+    const li = el('li', 'reveal'); li.style.setProperty('--i', i % 5);
+    const a = el('a'); a.href = GH + r.n;
+    a.append(el('span', 'fn', r.n), el('span', 'from', '⑂ ' + (r.f || 'fork')), el('span', 'st', [r.l, stars(r.s), r.fk ? '⑂ ' + r.fk : ''].filter(Boolean).join(' · ')));
+    li.append(a); $('forks').append(li);
+  });
+}
+render(SNAP);
+
+/* freshen: data.json is rebuilt by a scheduled workflow, the API call is live on every visit */
+(async () => {
+  let base = SNAP;
+  try { const r = await fetch('data.json', { cache: 'no-cache' }); if (r.ok) { base = await r.json(); render(base); } } catch (e) {}
+  try {
+    const r = await fetch(`https://api.github.com/users/${LOGIN}/repos?per_page=100&sort=pushed`, { headers: { Accept: 'application/vnd.github+json' } });
+    if (!r.ok) return;
+    const parents = Object.fromEntries(base.repos.map(x => [x.n, x.f]));
+    const live = (await r.json()).map(x => ({ n: x.name, l: x.language || 'Other', s: x.stargazers_count, fk: x.forks_count, d: x.pushed_at || x.created_at, t: x.description || '', fork: x.fork, f: parents[x.name] || '' }));
+    render({ generated: new Date().toISOString(), live: true, pinned: base.pinned, repos: live });
+  } catch (e) {}
+})();
 
 /* reveal on approach: elements are visible by default, the animation starts just before they scroll in */
 if (!REDUCED && 'IntersectionObserver' in window) {
@@ -558,10 +623,10 @@ if (!REDUCED && 'IntersectionObserver' in window) {
 /* headings decode themselves as they arrive */
 function scramble(node) {
   const txt = node.textContent, pool = [...txt.replace(/\s/g, '')], t0 = performance.now();
-  node.setAttribute('aria-label', txt);
+  node.setAttribute('aria-label', node.dataset.t || txt);
   const step = t => {
     const p = Math.min(1, (t - t0) / 1100), n = Math.floor(p * txt.length);
-    node.textContent = p < 1 ? txt.slice(0, n) + [...txt.slice(n)].map(c => c === ' ' ? ' ' : pool[Math.random() * pool.length | 0]).join('') : txt;
+    node.textContent = p < 1 ? txt.slice(0, n) + [...txt.slice(n)].map(c => c === ' ' ? ' ' : pool[Math.random() * pool.length | 0]).join('') : (node.dataset.t || txt);
     if (p < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
