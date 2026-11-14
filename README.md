@@ -16,4 +16,4 @@
 
 <a href="https://scuba3198.github.io/scuba3198/"><img src="assets/abyss.svg" width="100%" alt="Most starred: Wand-Enhancer (5 stars, 2 forks), Frostbyte (2 stars, 0 forks), allow-copy-plus-origin (2 stars, 0 forks). Open the full interactive dive."></a>
 
-<sub>This profile rebuilds itself from live GitHub data. Source: <a href="scripts/build.py">scripts/build.py</a>.</sub>
+<sub>This profile rebuilds itself from live GitHub data every ten minutes. Source: <a href="scripts/build.py">scripts/build.py</a>.</sub>
