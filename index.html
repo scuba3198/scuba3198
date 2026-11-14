@@ -206,19 +206,7 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .readout .what { font-size: 14.5px; color: var(--fg-dim); margin: 0; max-width: 60ch; }
 .key { margin: 14px 0 0; font: 400 12px/1.5 var(--mono); color: var(--fg-dim); }
 
-/* ---------- achievements + forks ---------- */
-.medals { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-bottom: 64px; }
-.medal { display: grid; justify-items: center; text-align: center; gap: 12px; padding: 12px; }
-.orb { position: relative; width: 132px; height: 132px; display: grid; place-items: center; }
-.orb::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1px dashed var(--c); animation: spin 16s linear infinite; }
-.orb::after { content: ""; position: absolute; inset: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 70%, white), color-mix(in srgb, var(--c) 30%, transparent) 55%, transparent 72%); box-shadow: 0 0 50px color-mix(in srgb, var(--c) 55%, transparent); animation: pulse 3.4s ease-in-out infinite; }
-.orb svg { position: relative; z-index: 1; width: 50px; height: 50px; fill: none; stroke: #02131c; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.orb .x { position: absolute; z-index: 2; right: 8px; top: 8px; font: 500 12px/1 var(--mono); background: var(--abyss); color: var(--c); border: 1px solid var(--c); border-radius: 999px; padding: 5px 8px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse { 50% { transform: scale(1.07); } }
-.medal h3 { margin: 0; font: 700 1.3rem/1.1 var(--display); }
-.medal p { margin: 0; font-size: 14px; color: var(--fg-dim); max-width: 26ch; }
-h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
+/* ---------- forks ---------- */
 .forks { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
 .forks li { border-bottom: 1px solid var(--line); }
 .forks a { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(150px, auto); gap: 6px 20px; align-items: baseline; padding: 16px 6px; text-decoration: none; transition: background .25s, padding .25s; }
@@ -343,33 +331,7 @@ h2.sub { font-size: clamp(1.6rem, 4vw, 2.6rem); }
   <section class="zone" data-zone>
     <div class="wrap">
       <p class="zone-tag reveal">Abyssal zone <em>4,000 – 6,000 m</em></p>
-      <h2 class="reveal">Things that glow down here.</h2>
-      <p class="lede reveal">Three GitHub achievements unlocked so far.</p>
-      <div class="medals">
-        <div class="medal reveal" style="--c: var(--glow)">
-          <div class="orb"><span class="x">×2</span>
-            <svg viewBox="0 0 48 48"><path d="M4 30c8-2 14-10 18-22 2 10 8 16 22 18-8 2-14 2-20 0-6 4-12 5-20 4z"/><path d="M22 26l-3 8M30 27l1 7"/></svg>
-          </div>
-          <h3>Pull Shark</h3>
-          <p>Bronze tier, earned twice over, for pull requests that got merged.</p>
-        </div>
-        <div class="medal reveal" style="--c: var(--lure)">
-          <div class="orb">
-            <svg viewBox="0 0 48 48"><circle cx="17" cy="16" r="6"/><circle cx="33" cy="16" r="6"/><path d="M6 40c0-7 5-11 11-11s8 3 8 3 2-3 8-3 9 4 9 11"/></svg>
-          </div>
-          <h3>Pair Extraordinaire</h3>
-          <p>Co-authored commits on a merged pull request.</p>
-        </div>
-        <div class="medal reveal" style="--c: var(--res)">
-          <div class="orb">
-            <svg viewBox="0 0 48 48"><path d="M26 4L10 27h12l-2 17 18-25H25z"/></svg>
-          </div>
-          <h3>YOLO</h3>
-          <p>Merged a pull request without waiting for a review.</p>
-        </div>
-      </div>
-
-      <h2 class="sub reveal" id="h-forks">Eight forks I keep in the tank.</h2>
+      <h2 class="reveal" id="h-forks">Eight forks I keep in the tank.</h2>
       <p class="lede reveal" id="p-forks">Other people's projects I've patched, extended or kept close, ranked by the stars and forks each one has picked up. Wand-Enhancer is my most-starred repo, with 5 stars and 2 forks of its own.</p>
       <ul class="forks" id="forks"></ul>
     </div>
@@ -497,7 +459,9 @@ function render(D) {
   const nl = order.filter(l => l !== 'Other').length;
   count('s-repos', R.length); count('s-own', own.length); count('s-langs', nl); count('s-stars', R.reduce((a, r) => a + r.s, 0));
   say('h-langs', `${word(nl)} language${s_(nl)}, one diver.`);
-  say('p-langs', `${order[0] || 'Nothing'} does the heavy lifting. Counts are the primary language of each of my ${R.length} public repos.`);
+  const real = order.filter(l => l !== 'Other'), lead = real.filter(l => counts[l].all === counts[real[0]].all);
+  const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  say('p-langs', (lead.length ? `${list(lead)} ${lead.length > 1 ? 'share' : 'does'} the heavy lifting. ` : '') + `Counts are the primary language of each of my ${R.length} public repos.`);
   $('stack').textContent = ''; $('langs').textContent = '';
   order.forEach((l, i) => {
     const seg = el('i'); seg.style.cssText = `--n:${counts[l].all};--c:${lang(l).c};--i:${i}`; seg.title = `${l}: ${counts[l].all}`;
@@ -606,8 +570,8 @@ render(SNAP);
   try {
     const r = await fetch(`https://api.github.com/users/${LOGIN}/repos?per_page=100&sort=pushed`, { headers: { Accept: 'application/vnd.github+json' } });
     if (!r.ok) return;
-    const parents = Object.fromEntries(base.repos.map(x => [x.n, x.f]));
-    const live = (await r.json()).map(x => ({ n: x.name, l: x.language || 'Other', s: x.stargazers_count, fk: x.forks_count, d: x.pushed_at || x.created_at, t: x.description || '', fork: x.fork, f: parents[x.name] || '' }));
+    const known = Object.fromEntries(base.repos.map(x => [x.n, x]));
+    const live = (await r.json()).map(x => ({ n: x.name, l: x.language || (known[x.name] && known[x.name].l) || 'Other', s: x.stargazers_count, fk: x.forks_count, d: x.pushed_at || x.created_at, t: x.description || '', fork: x.fork, f: (known[x.name] && known[x.name].f) || '' }));
     render({ generated: new Date().toISOString(), live: true, pinned: base.pinned, repos: live });
   } catch (e) {}
 })();
