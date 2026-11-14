@@ -144,7 +144,7 @@ readme = f'''<a href="{SITE}"><img src="assets/surface.svg" width="100%" alt="{L
 
 <a href="{SITE}"><img src="assets/abyss.svg" width="100%" alt="{ABYSS_ARIA}"></a>
 
-<sub>This profile rebuilds itself from live GitHub data. Source: <a href="scripts/build.py">scripts/build.py</a>.</sub>
+<sub>This profile rebuilds itself from live GitHub data every ten minutes. Source: <a href="scripts/build.py">scripts/build.py</a>.</sub>
 '''
 with open('README.md', 'w') as fh:
     fh.write(readme)
