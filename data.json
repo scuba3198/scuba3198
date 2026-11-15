@@ -5,11 +5,31 @@
  ],
  "repos": [
   {
+   "n": "essay-architect-pro",
+   "l": "TypeScript",
+   "s": 0,
+   "fk": 0,
+   "d": "2026-11-15T07:55:54Z",
+   "t": "Essay Architect Pro is a professional-grade AI writing suite designed specifically for students aiming for the highest bands (IELTS 8.5+ / PTE 85+). It transforms the chaotic process of essay writing into a precise, architectural discipline.",
+   "fork": false,
+   "f": ""
+  },
+  {
+   "n": "reciprocity-tracker",
+   "l": "JavaScript",
+   "s": 1,
+   "fk": 0,
+   "d": "2026-11-15T07:31:17Z",
+   "t": "A small, dependency-free CURE (cumulative reciprocity) tracker",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "Stremio-Kai",
    "l": "JavaScript",
    "s": 0,
    "fk": 0,
-   "d": "2026-11-14T22:29:05Z",
+   "d": "2026-11-15T06:39:35Z",
    "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
    "fork": true,
    "f": "allecsc/Stremio-Kai"
@@ -37,20 +57,10 @@
   {
    "n": "Frostbyte",
    "l": "C#",
-   "s": 2,
+   "s": 3,
    "fk": 0,
    "d": "2026-11-14T08:47:07Z",
    "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
-   "fork": false,
-   "f": ""
-  },
-  {
-   "n": "reciprocity-tracker",
-   "l": "JavaScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-11-13T03:18:50Z",
-   "t": "A small, dependency-free CURE (cumulative reciprocity) tracker",
    "fork": false,
    "f": ""
   },
@@ -63,16 +73,6 @@
    "t": "富江破甲（破甲）：DeepSeek Harness破甲插件，激活词富江，所有东西直接大白话问，内含技能库skill下载与调用、漏洞知识库poc利用、漏洞报告更新和全自动授权渗透。当前版本：0.20.12，附免责声明。插件图片看最下面",
    "fork": true,
    "f": "java99999/java-pojia"
-  },
-  {
-   "n": "essay-architect-pro",
-   "l": "TypeScript",
-   "s": 0,
-   "fk": 0,
-   "d": "2026-10-28T06:36:14Z",
-   "t": "Essay Architect Pro is a professional-grade AI writing suite designed specifically for students aiming for the highest bands (IELTS 8.5+ / PTE 85+). It transforms the chaotic process of essay writing into a precise, architectural discipline.",
-   "fork": false,
-   "f": ""
   },
   {
    "n": "pte-class-coverage",
@@ -285,5 +285,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-15T01:21:27Z"
+ "generated": "2026-11-15T08:12:18Z"
 }
