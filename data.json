@@ -5,6 +5,16 @@
  ],
  "repos": [
   {
+   "n": "Stremio-Kai",
+   "l": "JavaScript",
+   "s": 0,
+   "fk": 0,
+   "d": "2026-11-15T18:53:53Z",
+   "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
+   "fork": true,
+   "f": "allecsc/Stremio-Kai"
+  },
+  {
    "n": "essay-architect-pro",
    "l": "TypeScript",
    "s": 0,
@@ -23,16 +33,6 @@
    "t": "A small, dependency-free CURE (cumulative reciprocity) tracker",
    "fork": false,
    "f": ""
-  },
-  {
-   "n": "Stremio-Kai",
-   "l": "JavaScript",
-   "s": 0,
-   "fk": 0,
-   "d": "2026-11-15T06:39:35Z",
-   "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
-   "fork": true,
-   "f": "allecsc/Stremio-Kai"
   },
   {
    "n": "mumukshu-portfolio",
@@ -57,7 +57,7 @@
   {
    "n": "Frostbyte",
    "l": "C#",
-   "s": 3,
+   "s": 4,
    "fk": 0,
    "d": "2026-11-14T08:47:07Z",
    "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
@@ -285,5 +285,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-15T08:12:18Z"
+ "generated": "2026-11-15T20:36:56Z"
 }
