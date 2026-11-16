@@ -49,7 +49,16 @@ a { color: inherit; }
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: clamp(64px, 11vw, 140px);
 }
-.wrap { max-width: 1080px; margin-inline: auto; }
+/* Every .wrap is a 3D stage. JS moves its perspective origin to the viewport centre plus the camera
+   offset, so the page content and the water canvas share one vanishing point. */
+.wrap { max-width: 1080px; margin-inline: auto; perspective: 1100px; --zk: 1; }
+@media (max-width: 700px) { .wrap { --zk: .5; } }
+/* floating layers: pushed toward the viewer, scaled back so they keep their natural size at rest */
+.zone-tag { --z: 55; } h2 { --z: 35; } h1 { --z: 90; } .hero .id { --z: 40; } .pitch { --z: 20; }
+.stats { --z: 45; } .cta { --z: 60; } .filters { --z: 25; } .exit { --z: 40; }
+.zone-tag, h2, h1, .hero .id, .pitch, .stats, .cta, .filters, .exit {
+  transform: translateZ(calc(var(--z) * var(--zk) * 1px)) scale(calc(1 - var(--z) * var(--zk) / 1100));
+}
 
 /* ---------- depth gauge ---------- */
 .gauge {
@@ -81,7 +90,7 @@ h2 {
 .lede { max-width: 58ch; color: var(--fg-dim); margin: 0 0 40px; }
 
 /* ---------- reveal (visible at rest; animation only plays when triggered) ---------- */
-@keyframes rise { from { opacity: 0; transform: translateY(34px) scale(.98); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes rise { from { opacity: 0; transform: translate3d(0, 44px, -170px) rotateX(-26deg); filter: blur(6px); } }
 .in { animation: rise .9s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
 
 /* ---------- hero ---------- */
@@ -132,13 +141,20 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 @keyframes sink { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1) translateY(12px); opacity: 0; } }
 
 /* ---------- language mix ---------- */
-.stack { display: flex; height: 54px; border-radius: 8px; overflow: hidden; gap: 2px; margin-bottom: 30px; }
-.stack i { flex: var(--n) 1 0; background: var(--c); transform-origin: left; position: relative; overflow: hidden; }
+/* the bar is a row of solid blocks: you see their tops below eye level and their undersides above it */
+.stack { display: flex; height: 54px; gap: 2px; margin-bottom: 30px; transform-style: preserve-3d; transform: translateZ(calc(28px * var(--zk))); }
+.stack i {
+  flex: var(--n) 1 0; transform-origin: left; position: relative; transform-style: preserve-3d;
+  background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,.45) 50%, transparent 60%) 150% 0 / 300% 100% no-repeat, var(--c);
+  animation: sheen 4.5s ease-in-out infinite; animation-delay: calc(var(--i) * .35s);
+}
 .stack.in { animation: none; }
-.stack.in i { animation: grow 1s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i) * 90ms); }
-.stack i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%); transform: translateX(-100%); animation: sheen 4.5s ease-in-out infinite; animation-delay: calc(var(--i) * .35s); }
-@keyframes grow { from { transform: scaleX(0); } to { transform: none; } }
-@keyframes sheen { 0%, 55% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+.stack.in i { animation: grow 1s cubic-bezier(.2, .8, .2, 1) backwards, sheen 4.5s ease-in-out infinite; animation-delay: calc(var(--i) * 90ms), calc(var(--i) * .35s); }
+.stack i::before, .stack i::after { content: ""; position: absolute; left: 0; right: 0; height: 56px; backface-visibility: hidden; }
+.stack i::before { bottom: 100%; transform-origin: bottom; transform: rotateX(90deg); background: color-mix(in srgb, var(--c) 70%, #fff); }
+.stack i::after { top: 100%; transform-origin: top; transform: rotateX(-90deg); background: color-mix(in srgb, var(--c) 48%, #000); }
+@keyframes grow { from { transform: scaleX(0); } }
+@keyframes sheen { 0%, 55% { background-position: 150% 0, 0 0; } 100% { background-position: -50% 0, 0 0; } }
 .langs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 4px 40px; margin: 0; padding: 0; list-style: none; }
 .langs li { display: grid; grid-template-columns: 14px 1fr auto; gap: 12px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .langs .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 14px var(--c); align-self: center; }
@@ -155,23 +171,33 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 }
 .chip:hover { border-color: var(--glow); }
 .chip[aria-pressed="true"] { background: var(--glow); border-color: var(--glow); color: #02202a; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; transform-style: preserve-3d; }
+/* a card is a glass slab: the panel sits at the back (::after), the text floats above it in layers */
 .card {
   --mx: 50%; --my: 50%;
   position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 10px; min-width: 0;
-  padding: 20px; border-radius: 14px; text-decoration: none; overflow: hidden;
-  border: 1px solid var(--line); background: var(--panel);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  padding: 20px; border-radius: 14px; text-decoration: none;
+  border: 1px solid var(--line); transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(var(--lift, 0px));
   transition: transform .18s ease-out, border-color .25s;
 }
+.card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: var(--panel); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transform: translateZ(-1px); transition: box-shadow .25s;
+}
 .card::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
   background: radial-gradient(260px circle at var(--mx) var(--my), color-mix(in srgb, var(--c) 34%, transparent), transparent 70%);
 }
-.card:hover { border-color: var(--c); }
+.card:hover, .card:focus-visible { border-color: var(--c); --lift: 28px; }
+.card:hover::after, .card:focus-visible::after { box-shadow: 0 44px 50px -30px rgba(0, 0, 0, .65); }
 .card:hover::before, .card:focus-visible::before { opacity: 1; }
 .card > * { position: relative; }
+.card > * { transition: transform .3s ease-out; }
+.card:hover > div, .card:focus-visible > div { transform: translateZ(26px); }
+.card:hover > p, .card:focus-visible > p { transform: translateZ(12px); }
+.card:hover > footer, .card:focus-visible > footer { transform: translateZ(18px); }
 .card h3 { margin: 0; font: 700 1.22rem/1.15 var(--display); overflow-wrap: anywhere; }
 .card p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--fg-dim); }
 .card p.none { font-family: var(--mono); font-size: 12.5px; opacity: .7; }
@@ -185,18 +211,24 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .pin { font: 500 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--lure); }
 
 /* ---------- timeline ---------- */
-.log { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); padding: clamp(16px, 3vw, 30px); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-.cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; align-items: end; min-height: 300px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
-.col { display: flex; flex-direction: column-reverse; align-items: center; gap: 7px; min-width: 0; }
+/* the log is a tank: the panel is its back wall, the bubbles hang in front of it at different depths */
+.log { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: clamp(16px, 3vw, 30px); transform-style: preserve-3d; }
+.log::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--panel); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transform: translateZ(-1px); pointer-events: none; }
+.cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; align-items: end; min-height: 300px; border-bottom: 1px solid var(--line); padding-bottom: 8px; transform-style: preserve-3d; }
+.col { display: flex; flex-direction: column-reverse; align-items: center; gap: 7px; min-width: 0; transform-style: preserve-3d; }
 .bub {
+  --bz: calc((18px + mod(var(--k), 4) * 16px) * var(--zk));
   width: clamp(16px, 4.6vw, 34px); aspect-ratio: 1; border-radius: 50%; padding: 0; cursor: pointer;
   border: 1.5px solid var(--c); background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.75), color-mix(in srgb, var(--c) 55%, transparent) 38%, color-mix(in srgb, var(--c) 14%, transparent) 72%);
+  box-shadow: inset -3px -5px 9px rgba(0, 8, 16, .45), inset 2px 2px 5px rgba(255, 255, 255, .28);
+  translate: 0 0 var(--bz);
   animation: bob 4s ease-in-out infinite; animation-delay: calc(var(--k) * -0.37s);
   transition: box-shadow .2s, scale .2s;
 }
-.bub:hover, .bub[aria-pressed="true"] { box-shadow: 0 0 0 3px rgba(255,255,255,.2), 0 0 26px var(--c); scale: 1.18; }
+.bub:hover, .bub[aria-pressed="true"] { box-shadow: inset -3px -5px 9px rgba(0, 8, 16, .45), inset 2px 2px 5px rgba(255, 255, 255, .28), 0 0 0 3px rgba(255,255,255,.2), 0 0 26px var(--c); scale: 1.18; }
 .bub.fork { border-style: dashed; background: color-mix(in srgb, var(--c) 12%, transparent); }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes bob { 50% { translate: 0 -5px calc(var(--bz) + 14px); } }
+.months, .readout { transform: translateZ(calc(14px * var(--zk))); }
 .months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; margin-top: 8px; font: 400 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fg-dim); text-align: center; }
 .months b { display: block; color: var(--fg); font-weight: 500; font-size: 13px; }
 .readout { margin-top: 22px; display: grid; gap: 4px; min-height: 5.2em; }
@@ -207,10 +239,10 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .key { margin: 14px 0 0; font: 400 12px/1.5 var(--mono); color: var(--fg-dim); }
 
 /* ---------- forks ---------- */
-.forks { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.forks li { border-bottom: 1px solid var(--line); }
-.forks a { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(150px, auto); gap: 6px 20px; align-items: baseline; padding: 16px 6px; text-decoration: none; transition: background .25s, padding .25s; }
-.forks a:hover { background: rgba(92,242,224,.07); padding-left: 16px; }
+.forks { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); transform-style: preserve-3d; }
+.forks li { border-bottom: 1px solid var(--line); transform-style: preserve-3d; }
+.forks a { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(150px, auto); gap: 6px 20px; align-items: baseline; padding: 16px 6px; text-decoration: none; transition: background .25s, padding .25s, transform .25s; }
+.forks a:hover { background: rgba(92,242,224,.07); padding-left: 16px; transform: translateZ(26px); }
 .forks .fn { font: 700 1.15rem/1.2 var(--display); overflow-wrap: anywhere; }
 .forks .from { font: 400 12.5px/1.4 var(--mono); color: var(--fg-dim); overflow-wrap: anywhere; }
 .forks .st { font: 400 12.5px/1 var(--mono); color: var(--lure); white-space: nowrap; text-align: right; }
@@ -224,15 +256,15 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .bed .src { margin-top: 44px; font: 400 11.5px/1.6 var(--mono); color: var(--fg-dim); opacity: .8; }
 
 /* ---------- crazier: kinetic tape, drifting cards, pressure glitch ---------- */
-.tape { position: relative; z-index: 2; overflow: hidden; padding-block: 10px; display: grid; gap: 4px; }
-.tape .row { display: flex; width: max-content; white-space: nowrap; will-change: transform; font: 800 clamp(2.4rem, 7.5vw, 5.6rem)/1.05 var(--display); letter-spacing: -.03em; }
+.tape { position: relative; z-index: 2; overflow: hidden; padding-block: clamp(16px, 3.4vw, 40px); display: grid; gap: 4px; perspective: 900px; }
+.tape .row { display: flex; width: max-content; white-space: nowrap; will-change: transform; transform-origin: 50vw 50%; font: 800 clamp(2.4rem, 7.5vw, 5.6rem)/1.05 var(--display); letter-spacing: -.03em; }
 .tape .row span { padding: 0 .32em; color: rgba(230, 246, 247, .16); }
 .tape .row span.o { color: transparent; -webkit-text-stroke: 1.5px rgba(92, 242, 224, .55); }
 @keyframes drift { 50% { translate: 0 -7px; } }
 .card { animation: drift 6s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -0.9s); }
 .card.in { animation: rise .9s cubic-bezier(.2, .8, .2, 1) backwards, drift 6s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 70ms), calc(var(--i, 0) * -0.9s); }
 @keyframes crush {
-  0%, 88%, 100% { text-shadow: none; transform: none; }
+  0%, 88%, 100% { text-shadow: none; }
   90% { text-shadow: -4px 0 var(--res), 4px 0 var(--glow); transform: skewX(-7deg); }
   93% { text-shadow: 4px 0 var(--res), -4px 0 var(--glow); transform: skewX(5deg) scaleY(.92); }
   96% { text-shadow: -2px 0 var(--lure), 2px 0 var(--ps); transform: translateX(-4px); }
@@ -256,6 +288,14 @@ h1 .num { color: transparent; -webkit-text-stroke: 2px var(--fg); }
 .contact a:hover { border-color: var(--glow); transform: translateY(-3px); box-shadow: 0 12px 34px rgba(92, 242, 224, .18); }
 .contact small { font: 400 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--glow); }
 .contact b { font: 500 clamp(1rem, 3.8vw, 1.15rem)/1.3 var(--mono); overflow-wrap: anywhere; }
+
+/* ---------- scroll roll: things turn on a drum as they pass through the viewport ---------- */
+@keyframes roll { 0% { rotate: x -42deg; scale: .86; } 24%, 76% { rotate: x 0deg; scale: 1; } 100% { rotate: x 42deg; scale: .86; } }
+@supports (animation-timeline: view()) {
+  .card { animation: drift 6s ease-in-out infinite, roll linear both; animation-delay: calc(var(--i, 0) * -0.9s), 0s; animation-timeline: auto, view(); }
+  .card.in { animation: rise .9s cubic-bezier(.2, .8, .2, 1) backwards, drift 6s ease-in-out infinite, roll linear both; animation-delay: calc(var(--i, 0) * 70ms), calc(var(--i, 0) * -0.9s), 0s; animation-timeline: auto, auto, view(); }
+  .forks li, .forks li.in, .log, .log.in { animation: roll linear both; animation-timeline: view(); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -516,7 +556,7 @@ function render(D) {
     a.addEventListener('pointermove', e => {
       const b = a.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
       a.style.setProperty('--mx', x * 100 + '%'); a.style.setProperty('--my', y * 100 + '%');
-      if (!REDUCED && e.pointerType === 'mouse') { a.style.setProperty('--ry', (x - .5) * 9 + 'deg'); a.style.setProperty('--rx', (.5 - y) * 9 + 'deg'); }
+      if (!REDUCED && e.pointerType === 'mouse') { a.style.setProperty('--ry', (x - .5) * 15 + 'deg'); a.style.setProperty('--rx', (.5 - y) * 15 + 'deg'); }
     });
     a.addEventListener('pointerleave', () => { a.style.setProperty('--rx', '0deg'); a.style.setProperty('--ry', '0deg'); });
     grid.append(a);
@@ -631,7 +671,7 @@ function tapes(v) {
   for (const row of tapeRows) {
     const half = row._h || (row._h = row.scrollWidth / 2) || 1;
     row._o = (((row._o + row._d * (.7 + v * .55)) % half) + half) % half;
-    row.style.transform = `translateX(${-row._o}px) skewX(${Math.max(-20, Math.min(20, v * -.7 * row._d))}deg)`;
+    row.style.transform = `rotateY(${row._d * 13}deg) translateX(${-row._o}px) skewX(${Math.max(-20, Math.min(20, v * -.7 * row._d))}deg)`;
   }
 }
 const retape = () => { tapeRows.forEach(r => r._h = 0); tapes(0); };
@@ -669,45 +709,81 @@ function sound() {
 }
 addEventListener('scroll', sound, { passive: true }); addEventListener('resize', sound); sound();
 
-/* ---------- water canvas ---------- */
+/* ---------- water canvas: one camera, real depth ----------
+   Everything in the water has a z. Screen position is (world - camera) / z, so near things are big,
+   fast and soft while far things are small, slow and fogged. The same camera sets the perspective
+   origin of every .wrap, so the page content and the water share one vanishing point. */
 const cv = $('water'), cx = cv.getContext('2d');
-let W = 0, H = 0, DPR = 1;
-const ptr = { x: -999, y: -999, on: false };
+let W = 0, H = 0, DPR = 1, camY = 0, lastMs = 0;
+const ptr = { x: -999, y: -999, on: false, mouse: false };
+const cam = { x: 0, y: 0 };    // the water's camera: a slow sway of its own, never the cursor
+const look = { x: 0, y: 0 };   // the page's camera: leans toward the mouse
+const ZN = .45, ZF = 4.2;
+const rnd = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const fog = z => z < .62 ? clamp((z - ZN) / (.62 - ZN), 0, 1) : Math.pow(clamp(1 - (z - .62) / (ZF - .62), 0, 1), 1.25);
+const wrap = (v, n, pad) => { const m = n + 2 * pad; return ((v + pad) % m + m) % m - pad; };
+const place = (e, pad) => { e.sx = wrap(W / 2 + (e.X - cam.x) / e.z, W, pad); e.sy = wrap(H / 2 + (e.Y - cam.y - camY) / e.z, H, pad); };
 addEventListener('pointermove', e => {
-  ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true;
+  ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true; ptr.mouse = e.pointerType === 'mouse';
   if (!REDUCED && sparks.length < 160 && Math.random() < .55) sparks.push({ x: ptr.x, y: ptr.y, vx: rnd(-.5, .5), vy: rnd(-1.8, -.5), r: rnd(1.5, 4.5), a: .9 });
 }, { passive: true });
 addEventListener('pointerdown', e => { if (!REDUCED) boom(e.clientX, e.clientY); }, { passive: true });
-addEventListener('pointerleave', () => ptr.on = false);
-const rnd = (a, b) => a + Math.random() * (b - a);
-let bubbles = [], snow = [], jellies = [], fish = [], rings = [], sparks = [], sv = 0, lastY = scrollY;
-const angler = { x: -500, y: 300, dir: 1 };
+document.documentElement.addEventListener('pointerleave', () => { ptr.on = false; ptr.mouse = false; });
+let bubbles = [], snow = [], jellies = [], fish = [], schools = [], ents = [], rings = [], sparks = [], sv = 0, lastY = scrollY;
+const angler = { k: 4, z: 1.5, x: -500, y: 300, dir: 1 };
+const spot = z => ({ X: rnd(-.6, .6) * W * z, Y: rnd(-.6, .6) * H * z, z });
 function size() {
   DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
   cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
   const n = Math.round(Math.min(1, W * H / 900000) * 60) + 30;
-  bubbles = Array.from({ length: Math.round(n * .5) }, () => ({ x: rnd(0, W), y: rnd(0, H), r: rnd(1.5, 7), v: rnd(.3, 1.3), p: rnd(0, 6.3) }));
-  snow = Array.from({ length: n }, () => ({ x: rnd(0, W), y: rnd(0, H), r: rnd(.6, 2.2), v: rnd(.08, .4), p: rnd(0, 6.3), h: Math.random() < .5 ? '#5cf2e0' : (Math.random() < .5 ? '#ffb84a' : '#b693ff') }));
-  jellies = Array.from({ length: W < 700 ? 2 : 4 }, (_, i) => ({ x: rnd(.1, .9) * W, y: rnd(.2, 1) * H, s: rnd(22, 46), v: rnd(.18, .4), p: rnd(0, 6.3), h: ['#5cf2e0', '#b693ff', '#ff6478', '#55a8ff'][i % 4] }));
+  bubbles = Array.from({ length: Math.round(n * .8) }, (_, i) => ({ k: 0, i, ...spot(rnd(.5, 3.2)), r: rnd(2, 6.5), v: rnd(.3, 1.3), p: rnd(0, 6.3) }));
+  snow = Array.from({ length: Math.round(n * 1.3) }, () => ({ k: 1, ...spot(rnd(ZN, ZF)), r: rnd(.9, 2.4), v: rnd(.08, .4), p: rnd(0, 6.3), h: Math.random() < .5 ? '#5cf2e0' : (Math.random() < .5 ? '#ffb84a' : '#b693ff') }));
+  jellies = Array.from({ length: W < 700 ? 3 : 6 }, (_, i) => ({ k: 3, ...spot(rnd(.8, 2.6)), s: rnd(26, 50), v: rnd(.18, .4), p: rnd(0, 6.3), h: ['#5cf2e0', '#b693ff', '#ff6478', '#55a8ff'][i % 4] }));
 }
+/* each school circles a ring that runs from deep in the fog to right in front of the lens */
 function school() {
-  fish = []; const schools = W < 700 ? 2 : 4, per = W < 700 ? 7 : 12;
-  for (let s = 0; s < schools; s++) {
-    const dir = s % 2 ? -1 : 1, y0 = rnd(.15, .85) * H, x0 = rnd(0, W), sp = rnd(.9, 2), h = ['#9ff5ea', '#ffd38a', '#a9c8ff', '#ff9fb0'][s % 4];
-    for (let i = 0; i < per; i++) fish.push({ x: x0 + rnd(-110, 110), y: y0 + rnd(-50, 50), dir, v: sp * rnd(.85, 1.15), s: rnd(7, 13), p: rnd(0, 6.3), h, fx: 0, fy: 0 });
+  fish = []; schools = []; const ns = W < 700 ? 2 : 4, per = W < 700 ? 7 : 12;
+  for (let s = 0; s < ns; s++) {
+    const zc = rnd(1.3, 2.1), h = ['#9ff5ea', '#ffd38a', '#a9c8ff', '#ff9fb0'][s % 4];
+    const sc = { a: rnd(0, 6.3), w: (s % 2 ? -1 : 1) * rnd(.9, 2) / (.6 * W), Rx: .6 * W * zc, Rz: zc * rnd(.4, .55), zc, Y: rnd(-.35, .35) * H * zc };
+    schools.push(sc);
+    for (let i = 0; i < per; i++) fish.push({ k: 2, sc, X: 0, Y: 0, z: zc, sx: -999, sy: -999, ox: rnd(-110, 110) * zc, oy: rnd(-50, 50) * zc, oz: rnd(-.16, .16), s: rnd(11, 20), p: rnd(0, 6.3), h, fx: 0, fy: 0, dx: 0, dy: 0, fs: 1, dir: 1 });
   }
   angler.y = H * .55;
+  ents = [...bubbles, ...snow, ...jellies, ...fish, angler];
 }
 function boom(x, y) {
   rings.push({ x, y, r: 0 });
   for (let i = 0; i < 22; i++) { const a = rnd(0, 6.3), v = rnd(1, 6.5); sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: rnd(1.5, 5.5), a: 1 }); }
-  for (const f of fish) { const dx = f.x - x, dy = f.y - y, d = Math.hypot(dx, dy) + 1; if (d < 340) { f.fx += dx / d * 9; f.fy += dy / d * 9; } }
-  for (const b of bubbles) { const dx = b.x - x, dy = b.y - y, d = Math.hypot(dx, dy) + 1; if (d < 260) { b.x += dx / d * 40; b.y += dy / d * 40; } }
+  for (const f of fish) { const dx = f.sx - x, dy = f.sy - y, d = Math.hypot(dx, dy) + 1; if (d < 340) { f.fx += dx / d * 9; f.fy += dy / d * 9; } }
+  for (const b of bubbles) { const dx = b.sx - x, dy = b.sy - y, d = Math.hypot(dx, dy) + 1; if (d < 260) { b.X += dx / d * 40 * b.z; b.Y += dy / d * 40 * b.z; } }
 }
+
+/* the page's own 3D: move every stage's vanishing point with the camera, and extrude the title away from it */
+const stages = [...document.querySelectorAll('.wrap')];
+const EXT = Array.from({ length: 15 }, (_, i) => { const p = i / 14; return `rgb(${Math.round(16 - 12 * p)},${Math.round(128 - 90 * p)},${Math.round(154 - 96 * p)})`; });
+let stageKey = '', shadeKey = '';
+function stage() {
+  const k = (look.x | 0) + '|' + (look.y | 0) + '|' + scrollY + '|' + W + '|' + H;
+  if (k === stageKey) return; stageKey = k;
+  for (const s of stages) {
+    const b = s.getBoundingClientRect(); if (b.bottom < -300 || b.top > H + 300) continue;
+    s.style.perspectiveOrigin = `${(W / 2 - b.left + look.x).toFixed(1)}px ${(H / 2 - b.top + look.y).toFixed(1)}px`;
+  }
+  const b = title.getBoundingClientRect(); if (b.bottom < 0 || b.top > H) return;
+  const n = b.height > 110 ? 14 : 7;
+  const ex = Math.round(clamp((W / 2 + look.x - (b.left + b.width / 2)) / 260, -1.3, 1.3) * 20) / 20;
+  const ey = Math.round(clamp((H / 2 + look.y - (b.top + b.height / 2)) / 150, -1.3, 1.3) * 20) / 20;
+  if (shadeKey === (shadeKey = n + '|' + ex + '|' + ey)) return;
+  let sh = ''; for (let i = 1; i <= n; i++) sh += `${(ex * i).toFixed(2)}px ${(ey * i).toFixed(2)}px 0 ${EXT[Math.round(i / n * 14)]},`;
+  title.style.textShadow = sh + `${(ex * n * 1.7).toFixed(1)}px ${(ey * n * 1.7).toFixed(1)}px 26px rgba(0,12,24,.5)`;
+}
+
 function drawAngler(t, a) {
-  const S = Math.min(130, W * .2), y = angler.y + Math.sin(t * .7) * 14;
+  const z = angler.z, S = Math.min(130, W * .2) * 1.5 / z, y = angler.y - cam.y / z + Math.sin(t * .7) * 14;
   const lx = S * 1.15, ly = -S * .95 + Math.sin(t * 2) * 6, fl = .65 + .35 * Math.sin(t * 5) * Math.sin(t * 1.3);
-  cx.save(); cx.translate(angler.x, y); cx.scale(angler.dir, 1); cx.globalAlpha = a;
+  cx.save(); cx.translate(angler.x - cam.x / z, y); cx.scale(angler.dir, 1); cx.globalAlpha = a * clamp(1.3 - (z - 1.05) * .55, .4, 1);
   cx.globalCompositeOperation = 'lighter';
   const g = cx.createRadialGradient(lx, ly, 0, lx, ly, S * 1.7);
   g.addColorStop(0, `rgba(255,190,90,${.55 * fl})`); g.addColorStop(1, 'rgba(255,190,90,0)');
@@ -727,81 +803,125 @@ function drawAngler(t, a) {
   cx.restore();
 }
 function jelly(j, t, a) {
-  const beat = Math.sin(t * 1.6 + j.p), s = j.s, w = s * (1 + beat * .1), h = s * (.78 - beat * .1);
-  cx.save(); cx.translate(j.x + Math.sin(t * .35 + j.p) * 26, j.y); cx.globalAlpha = a;
+  const beat = Math.sin(t * 1.6 + j.p), s = j.s, w = s * (1 + beat * .1), h = s * (.78 - beat * .1), k = 1 / j.z;
+  cx.save(); cx.translate(j.sx + Math.sin(t * .35 + j.p) * 26 * k, j.sy); cx.scale(k, k); cx.globalAlpha = a;
+  cx.globalCompositeOperation = 'lighter';
   const g = cx.createRadialGradient(0, -h * .3, 2, 0, 0, w * 1.9);
   g.addColorStop(0, j.h + 'cc'); g.addColorStop(.45, j.h + '33'); g.addColorStop(1, j.h + '00');
   cx.fillStyle = g; cx.beginPath(); cx.arc(0, 0, w * 1.9, 0, 6.3); cx.fill();
-  cx.fillStyle = j.h + '55'; cx.strokeStyle = j.h; cx.lineWidth = 1.2;
+  cx.fillStyle = j.h + '55'; cx.strokeStyle = j.h; cx.lineWidth = 1.2 * Math.min(2, j.z);
   cx.beginPath(); cx.moveTo(-w, 0); cx.bezierCurveTo(-w, -h * 1.5, w, -h * 1.5, w, 0); cx.quadraticCurveTo(0, h * .35, -w, 0); cx.fill(); cx.stroke();
   cx.globalAlpha = a * .7;
   for (let i = -2; i <= 2; i++) {
     cx.beginPath(); const x0 = i * w * .36; cx.moveTo(x0, h * .1);
-    for (let k = 1; k <= 9; k++) cx.lineTo(x0 + Math.sin(t * 2.1 + j.p + k * .75 + i) * (3 + k * .9), h * .1 + k * s * .23);
+    for (let q = 1; q <= 9; q++) cx.lineTo(x0 + Math.sin(t * 2.1 + j.p + q * .75 + i) * (3 + q * .9), h * .1 + q * s * .23);
     cx.stroke();
   }
   cx.restore();
 }
+/* the seabed: dune ridges on a ground plane running to the horizon, lit by glowing specks */
+function seabed(t, p) {
+  const hor = H * .64 + (1 - p) * H * .6, D = (H - hor + 60) * .55, SP = .22, camZ = t * .1 + scrollY * .0006;
+  const dune = (X, zw) => 30 * Math.sin(X * .0035 + zw * 1.9) + 16 * Math.sin(X * .009 - zw * 3.1 + 1.7) + 7 * Math.sin(X * .021 + zw * 6.3);
+  cx.save(); cx.lineWidth = 1;
+  for (let j = Math.floor((camZ + 7) / SP); j * SP - camZ > .5; j--) {
+    const zw = j * SP, z = zw - camZ, f = Math.pow(clamp(1 - (z - .5) / 6.5, 0, 1), 1.5) * clamp((z - .5) / .25, 0, 1) * p;
+    const Y = X => hor + (D - dune(X, zw)) / z - cam.y * .3 / z;
+    cx.beginPath();
+    for (let i = 0; i <= 36; i++) { const sx = -30 + (W + 60) * i / 36, X = (sx - W / 2) * z + cam.x; i ? cx.lineTo(sx, Y(X)) : cx.moveTo(sx, Y(X)); }
+    cx.lineTo(W + 30, H + 10); cx.lineTo(-30, H + 10); cx.closePath();
+    cx.fillStyle = `rgba(1,8,16,${p})`; cx.fill();
+    cx.strokeStyle = `rgba(92,242,224,${.36 * f})`; cx.stroke();
+    const G = 170, d = Math.max(1, 2.4 / z), off = (j & 1) * G / 2;
+    cx.fillStyle = j % 3 ? `rgba(92,242,224,${.85 * f})` : `rgba(255,184,74,${.9 * f})`;
+    for (let q = Math.floor(((-30 - W / 2) * z + cam.x - off) / G); ; q++) {
+      const X = q * G + off, sx = W / 2 + (X - cam.x) / z; if (sx > W + 30) break;
+      cx.fillRect(sx - d / 2, Y(X) - d / 2, d, d);
+    }
+  }
+  cx.restore();
+}
 function draw(ms) {
-  const t = ms / 1000; cx.clearRect(0, 0, W, H);
-  if (!REDUCED) { const sy = scrollY; sv += ((sy - lastY) - sv) * .18; lastY = sy; if (Math.abs(sv) < .01) sv = 0; tapes(sv); }
+  const t = ms / 1000, dt = REDUCED ? 0 : clamp((ms - lastMs) / 16.67, .2, 3); lastMs = ms;
+  cx.clearRect(0, 0, W, H);
+  if (!REDUCED) {
+    const sy = scrollY; sv += ((sy - lastY) - sv) * .18; lastY = sy; if (Math.abs(sv) < .01) sv = 0; tapes(sv);
+    // the water sways on its own; only the page content leans toward the mouse (and follows the sway on touch)
+    cam.x = Math.sin(t * .35) * W * .1; cam.y = Math.cos(t * .27) * H * .05;
+    const tx = ptr.mouse ? (ptr.x - W / 2) * .5 : cam.x, ty = ptr.mouse ? (ptr.y - H / 2) * .35 : cam.y;
+    look.x += (tx - look.x) * .06; look.y += (ty - look.y) * .06;
+  }
+  camY = scrollY * .5; stage();
   const light = Math.max(0, 1 - frac * 3.4), dark = Math.min(1, frac * 1.7);
-  // sun rays near the surface
+  // sun rays near the surface, in three parallax layers
   if (light > .01) {
     cx.save(); cx.globalCompositeOperation = 'lighter';
     for (let i = 0; i < 7; i++) {
-      const x = W * (.05 + i * .15) + Math.sin(t * .22 + i * 1.7) * 50, w = 50 + (i % 3) * 46;
+      const x = W * (.05 + i * .15) + Math.sin(t * .22 + i * 1.7) * 50 - cam.x * (.12 + (i % 3) * .14), w = 50 + (i % 3) * 46;
       const g = cx.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, `rgba(190,255,245,${.2 * light * (.6 + .4 * Math.sin(t * .5 + i))})`); g.addColorStop(1, 'rgba(190,255,245,0)');
       cx.fillStyle = g; cx.beginPath(); cx.moveTo(x, -10); cx.lineTo(x + w, -10); cx.lineTo(x + w - 230, H); cx.lineTo(x - 310, H); cx.fill();
     }
     cx.restore();
   }
-  // bubbles rise, thinning out with depth
-  cx.lineWidth = 1;
+  const bed = clamp((frac - .84) / .14, 0, 1);
+  if (bed > 0) seabed(t, bed);
+
+  // move everything, then paint far to near
   const nb = Math.ceil(bubbles.length * (1 - dark * .75));
-  for (let i = 0; i < nb; i++) {
-    const b = bubbles[i]; b.y -= b.v + sv * (.25 + b.r * .09); b.x += Math.sin(t * 1.4 + b.p) * .35;
-    if (b.y > H + 20) b.y = -10;
-    if (Math.abs(sv) > 3) { cx.strokeStyle = `rgba(220,255,252,${Math.min(.5, Math.abs(sv) * .02)})`; cx.beginPath(); cx.moveTo(b.x, b.y); cx.lineTo(b.x, b.y + Math.max(-70, Math.min(70, sv * b.r * .7))); cx.stroke(); }
-    if (ptr.on) { const dx = b.x - ptr.x, dy = b.y - ptr.y, d2 = dx * dx + dy * dy; if (d2 < 9000) { b.x += dx / Math.sqrt(d2 + 1) * 1.6; b.y += dy / Math.sqrt(d2 + 1) * 1.6; } }
-    if (b.y < -10) { b.y = H + 10; b.x = rnd(0, W); }
-    cx.strokeStyle = `rgba(220,255,252,${.45 - dark * .2})`; cx.beginPath(); cx.arc(b.x, b.y, b.r, 0, 6.3); cx.stroke();
-    cx.fillStyle = 'rgba(255,255,255,.5)'; cx.beginPath(); cx.arc(b.x - b.r * .35, b.y - b.r * .35, b.r * .22, 0, 6.3); cx.fill();
+  const fa = clamp((frac - .03) * 9, 0, 1), ja = clamp((frac - .2) * 3.5, 0, 1), aa = clamp((frac - .55) * 5, 0, 1);
+  for (const sc of schools) sc.a += sc.w * dt;
+  for (const b of bubbles) {
+    b.Y -= b.v * dt; b.X += Math.sin(t * 1.4 + b.p) * .35 * b.z * dt;
+    if (ptr.on) { const dx = b.sx - ptr.x, dy = b.sy - ptr.y, d2 = dx * dx + dy * dy; if (d2 < 9000) { const d = Math.sqrt(d2 + 1); b.X += dx / d * 1.6 * b.z; b.Y += dy / d * 1.6 * b.z; } }
+    place(b, 20);
   }
-  // marine snow, turning bioluminescent in the dark
-  cx.save(); cx.globalCompositeOperation = 'lighter';
   for (const s of snow) {
-    s.y += s.v - sv * s.r * .12; s.x += Math.sin(t * .6 + s.p) * .25; if (s.y > H + 5) { s.y = -5; s.x = rnd(0, W); } else if (s.y < -5) s.y = H + 5;
-    const tw = .5 + .5 * Math.sin(t * 2 + s.p * 3);
-    if (dark > .25) { cx.shadowBlur = 12; cx.shadowColor = s.h; cx.fillStyle = s.h; cx.globalAlpha = (.25 + tw * .7) * dark; }
-    else { cx.shadowBlur = 0; cx.fillStyle = '#dffcff'; cx.globalAlpha = .28; }
-    cx.beginPath(); cx.arc(s.x, s.y, s.r * (dark > .25 ? 1 + tw * .5 : 1), 0, 6.3); cx.fill();
+    // scrolling is a dive: the snow rushes at the lens on the way down and falls away on the way up
+    s.z -= (.0007 + sv * .0022) * dt; s.Y += s.v * dt; s.X += Math.sin(t * .6 + s.p) * .25 * dt;
+    if (s.z < ZN) Object.assign(s, spot(ZF)); else if (s.z > ZF) Object.assign(s, spot(ZN + .05));
+    place(s, 16);
   }
-  cx.restore();
-  // schools of fish: flee the pointer, scatter on click
-  const fa = Math.max(0, Math.min(1, (frac - .03) * 9));
-  if (fa > 0) for (const f of fish) {
-    f.x += f.dir * f.v + f.fx; f.y += f.fy - sv * .2; f.fx *= .94; f.fy *= .94;
-    if (ptr.on) { const dx = f.x - ptr.x, dy = f.y - ptr.y, d2 = dx * dx + dy * dy; if (d2 < 16000) { const d = Math.sqrt(d2) + 1; f.fx += dx / d * .5; f.fy += dy / d * .5; } }
-    if (f.x > W + 60) f.x = -60; else if (f.x < -60) f.x = W + 60;
-    if (f.y > H + 40) f.y = -40; else if (f.y < -40) f.y = H + 40;
-    const wag = Math.sin(t * 9 + f.p), s = f.s;
-    cx.save(); cx.translate(f.x, f.y + Math.sin(t * 1.3 + f.p) * 6); cx.scale(f.dir, 1); cx.rotate(Math.atan2(f.fy, 4));
-    cx.globalAlpha = fa * (.38 + dark * .5); cx.fillStyle = f.h; if (dark > .4) { cx.shadowBlur = 10; cx.shadowColor = f.h; }
-    cx.beginPath(); cx.ellipse(0, 0, s, s * .38, 0, 0, 6.3); cx.fill();
-    cx.beginPath(); cx.moveTo(-s * .8, 0); cx.lineTo(-s * 1.7, -s * .5 + wag * s * .25); cx.lineTo(-s * 1.7, s * .5 + wag * s * .25); cx.fill();
-    cx.restore();
+  for (const f of fish) {
+    const sc = f.sc, hx = Math.cos(sc.a) * sc.Rx * sc.w, hz = -Math.sin(sc.a) * sc.Rz * sc.w * 520;
+    f.dir = hx < 0 ? -1 : 1; f.fs = Math.abs(hx) / (Math.hypot(hx, hz) + 1e-9);
+    f.dx = (f.dx + f.fx * dt) * .996; f.dy = (f.dy + f.fy * dt) * .996; f.fx *= .94; f.fy *= .94;
+    f.z = clamp(sc.zc + Math.cos(sc.a) * sc.Rz + f.oz, ZN + .08, ZF);
+    f.X = Math.sin(sc.a) * sc.Rx + f.ox + f.dx * f.z; f.Y = sc.Y + f.oy + f.dy * f.z + Math.sin(t * 1.3 + f.p) * 6;
+    f.sx = W / 2 + (f.X - cam.x) / f.z; f.sy = wrap(H / 2 + (f.Y - cam.y - camY) / f.z, H, 80);
   }
-  // jellyfish drift up once the light fades
-  const ja = Math.max(0, Math.min(1, (frac - .2) * 3.5));
-  if (ja > 0) { cx.save(); cx.globalCompositeOperation = 'lighter'; for (const j of jellies) { j.y -= j.v * (1.2 + Math.sin(t * 1.6 + j.p)); if (j.y < -j.s * 4) { j.y = H + j.s * 3; j.x = rnd(.08, .92) * W; } jelly(j, t, ja * .8); } cx.restore(); }
-  // an anglerfish patrols the deep
-  const aa = Math.max(0, Math.min(1, (frac - .55) * 5));
+  if (ja > 0) for (const j of jellies) { j.Y -= j.v * (1.2 + Math.sin(t * 1.6 + j.p)) * j.z * dt; place(j, j.s * 4 / j.z); }
   if (aa > 0) {
-    angler.x += angler.dir * .8;
+    angler.z = 1.5 + .45 * Math.sin(t * .11); angler.x += angler.dir * .8 * dt;
     if (angler.x > W + 450) { angler.dir = -1; angler.y = rnd(.25, .8) * H; } else if (angler.x < -450) { angler.dir = 1; angler.y = rnd(.25, .8) * H; }
-    drawAngler(t, aa);
+  }
+  ents.sort((a, b) => b.z - a.z);
+  for (const e of ents) {
+    const k = 1 / e.z, f = fog(e.z);
+    if (e.k === 0) {            // bubble
+      if (e.i >= nb) continue;
+      const r = e.r * k, near = e.z < .8, a = f * (.5 - dark * .2) * (near ? .55 : 1);
+      if (Math.abs(sv) > 3) { cx.lineWidth = 1; cx.strokeStyle = `rgba(220,255,252,${Math.min(.5, Math.abs(sv) * .02) * f})`; cx.beginPath(); cx.moveTo(e.sx, e.sy); cx.lineTo(e.sx, e.sy + clamp(sv * e.r * .7 * k, -90, 90)); cx.stroke(); }
+      cx.lineWidth = near ? 1.8 : 1; cx.strokeStyle = `rgba(220,255,252,${a})`; cx.beginPath(); cx.arc(e.sx, e.sy, r, 0, 6.3); cx.stroke();
+      if (near) { cx.fillStyle = `rgba(200,250,250,${.06 * f})`; cx.fill(); }
+      if (r > 1.4) { cx.fillStyle = `rgba(255,255,255,${.5 * f})`; cx.beginPath(); cx.arc(e.sx - r * .35, e.sy - r * .35, r * .22, 0, 6.3); cx.fill(); }
+    } else if (e.k === 1) {     // marine snow, turning bioluminescent in the dark and blurring to bokeh up close
+      const glow = dark > .25, tw = .5 + .5 * Math.sin(t * 2 + e.p * 3), r = Math.min(16, e.r * k * (glow ? 1 + tw * .5 : 1));
+      cx.globalCompositeOperation = 'lighter';
+      if (glow) { cx.shadowBlur = e.z < 2 ? 12 : 0; cx.shadowColor = e.h; cx.fillStyle = e.h; cx.globalAlpha = (.25 + tw * .7) * dark * f * Math.min(1, 4 / r); }
+      else { cx.fillStyle = '#dffcff'; cx.globalAlpha = .34 * f * Math.min(1, 4 / r); }
+      cx.beginPath(); cx.arc(e.sx, e.sy, r, 0, 6.3); cx.fill();
+      cx.shadowBlur = 0; cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+    } else if (e.k === 2) {     // fish: foreshortened as they turn toward or away from the lens
+      if (fa <= 0 || e.sx < -90 || e.sx > W + 90) continue;
+      const wag = Math.sin(t * 9 + e.p), s = e.s, L = s * Math.max(.4, e.fs);
+      cx.save(); cx.translate(e.sx, e.sy); cx.scale(e.dir * k, k); cx.rotate(Math.atan2(e.fy, 4));
+      cx.globalAlpha = fa * (.38 + dark * .5) * f; cx.fillStyle = e.h; if (dark > .4 && e.z < 2) { cx.shadowBlur = 10; cx.shadowColor = e.h; }
+      cx.beginPath(); cx.ellipse(0, 0, L, s * .38, 0, 0, 6.3); cx.fill();
+      cx.beginPath(); cx.moveTo(-L * .8, 0); cx.lineTo(-L * .8 - s * .9 * e.fs, -s * .5 + wag * s * .25); cx.lineTo(-L * .8 - s * .9 * e.fs, s * .5 + wag * s * .25); cx.fill();
+      cx.restore();
+    } else if (e.k === 3) { if (ja > 0) jelly(e, t, ja * .8 * f); }
+    else if (aa > 0) drawAngler(t, aa);
   }
   // sonar shockwaves and bubble bursts
   cx.save(); cx.globalCompositeOperation = 'lighter';
