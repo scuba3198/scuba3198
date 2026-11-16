@@ -87,7 +87,7 @@
 <text class="in" style="animation-delay:.7s; font: 400 27px 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#eafafa"><tspan x="62" y="304">I build small, sharp tools: browser extensions, Windows utilities</tspan><tspan x="62" dy="36">and trading helpers for </tspan><tspan fill="#ffb84a" font-weight="700">NEPSE</tspan>.</text>
 <line x1="62" y1="372" x2="1138" y2="372" stroke="#fff" stroke-opacity=".3"/>
 <g class="in" style="animation-delay:1s" fill="#eafafa">
-<text class="num" x="62" y="442">20</text><text class="mono" x="145" y="438" style="font-size:14px" fill="#d3f1f2">BUILT FROM SCRATCH</text><text class="num" x="430" y="442">7</text><text class="mono" x="474" y="438" style="font-size:14px" fill="#d3f1f2">LANGUAGES</text><text class="num" x="690" y="442">28</text><text class="mono" x="773" y="438" style="font-size:14px" fill="#d3f1f2">STARS EARNED</text>
+<text class="num" x="62" y="442">21</text><text class="mono" x="145" y="438" style="font-size:14px" fill="#d3f1f2">BUILT FROM SCRATCH</text><text class="num" x="430" y="442">7</text><text class="mono" x="474" y="438" style="font-size:14px" fill="#d3f1f2">LANGUAGES</text><text class="num" x="690" y="442">29</text><text class="mono" x="773" y="438" style="font-size:14px" fill="#d3f1f2">STARS EARNED</text>
 </g>
 <g class="cue"><text x="1138" y="480" text-anchor="end" class="mono" style="font-size:13px" fill="#eafafa">DESCEND ↓</text></g>
 </g>
