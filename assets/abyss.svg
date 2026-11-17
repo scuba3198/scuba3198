@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-label="Most starred: Frostbyte (4 stars, 0 forks), allow-copy-plus-origin (2 stars, 0 forks), battery-cap (1 stars, 0 forks). Open the full interactive dive.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-label="Most starred: Frostbyte (4 stars, 0 forks), allow-copy-plus-origin (2 stars, 0 forks), mumukshu-portfolio (1 stars, 0 forks). Open the full interactive dive.">
 <defs>
 <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03182b"/><stop offset=".6" stop-color="#020b16"/><stop offset="1" stop-color="#01060d"/></linearGradient>
 <radialGradient id="lure"><stop offset="0" stop-color="#ffbe5a" stop-opacity=".7"/><stop offset="1" stop-color="#ffbe5a" stop-opacity="0"/></radialGradient>
@@ -145,7 +145,7 @@
 <text x="470" y="260" text-anchor="middle" fill="#9dbfc6" style="font: 500 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing:2px">2 STARS · 0 FORKS</text></g><g class="in" style="animation-delay:0.6000000000000001s"><circle class="spin" cx="740" cy="150" r="52" fill="none" stroke="#ff6478" stroke-dasharray="4 6"/>
 <circle class="pulse" cx="740" cy="150" r="40" fill="url(#off6478)"/>
 <g transform="translate(720 130)" fill="none" stroke="#02131c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><text x="20" y="31" text-anchor="middle" fill="#02131c" stroke="none" style="font: 800 30px 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">1</text></g>
-<text x="740" y="236" text-anchor="middle" fill="#eafafa" style="font: 700 19px 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">battery-cap</text>
+<text x="740" y="236" text-anchor="middle" fill="#eafafa" style="font: 700 19px 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">mumukshu-portfolio</text>
 <text x="740" y="260" text-anchor="middle" fill="#9dbfc6" style="font: 500 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing:2px">1 STAR · 0 FORKS</text></g>
 <g class="in" style="animation-delay:.9s">
 <circle class="sonar" cx="86" cy="326" r="20" fill="none" stroke="#5cf2e0" stroke-width="1.5"/>
