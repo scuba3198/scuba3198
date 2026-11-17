@@ -5,6 +5,16 @@
  ],
  "repos": [
   {
+   "n": "Stremio-Kai",
+   "l": "JavaScript",
+   "s": 0,
+   "fk": 0,
+   "d": "2026-11-16T22:09:17Z",
+   "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
+   "fork": true,
+   "f": "allecsc/Stremio-Kai"
+  },
+  {
    "n": "battery-cap",
    "l": "C#",
    "s": 1,
@@ -13,16 +23,6 @@
    "t": "Tiny Windows tray utility that caps Acer laptop battery charging at 80/90/100% - no admin required",
    "fork": false,
    "f": ""
-  },
-  {
-   "n": "Stremio-Kai",
-   "l": "JavaScript",
-   "s": 0,
-   "fk": 0,
-   "d": "2026-11-16T06:35:51Z",
-   "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
-   "fork": true,
-   "f": "allecsc/Stremio-Kai"
   },
   {
    "n": "essay-architect-pro",
@@ -295,5 +295,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-16T07:07:55Z"
+ "generated": "2026-11-17T00:51:42Z"
 }
