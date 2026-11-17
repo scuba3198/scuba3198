@@ -5,14 +5,14 @@
  ],
  "repos": [
   {
-   "n": "Stremio-Kai",
-   "l": "JavaScript",
+   "n": "scuba3198.github.io",
+   "l": "HTML",
    "s": 0,
    "fk": 0,
-   "d": "2026-11-16T22:09:17Z",
-   "t": "Personal fork of allecsc/Stremio-Kai with auto-applied patches. Read FORK.md for setup/update instructions.",
-   "fork": true,
-   "f": "allecsc/Stremio-Kai"
+   "d": "2026-11-17T07:54:39Z",
+   "t": "root redirect to the dive log",
+   "fork": false,
+   "f": ""
   },
   {
    "n": "battery-cap",
@@ -75,16 +75,6 @@
    "f": ""
   },
   {
-   "n": "fujiang-pojia",
-   "l": "JavaScript",
-   "s": 0,
-   "fk": 0,
-   "d": "2026-11-09T13:37:10Z",
-   "t": "富江破甲（破甲）：DeepSeek Harness破甲插件，激活词富江，所有东西直接大白话问，内含技能库skill下载与调用、漏洞知识库poc利用、漏洞报告更新和全自动授权渗透。当前版本：0.20.12，附免责声明。插件图片看最下面",
-   "fork": true,
-   "f": "java99999/java-pojia"
-  },
-  {
    "n": "pte-class-coverage",
    "l": "TypeScript",
    "s": 1,
@@ -125,16 +115,6 @@
    "f": ""
   },
   {
-   "n": "linkbridge",
-   "l": "JavaScript",
-   "s": 0,
-   "fk": 0,
-   "d": "2026-10-17T15:36:28Z",
-   "t": "Resolve FileCrypt container links after a manual CAPTCHA and copy destinations to the clipboard. A lightweight Chromium extension.",
-   "fork": false,
-   "f": ""
-  },
-  {
    "n": "brave-feature-control",
    "l": "PowerShell",
    "s": 1,
@@ -153,16 +133,6 @@
    "t": "An interactive ReScript and React story of cumulative reciprocity in evolving populations",
    "fork": false,
    "f": ""
-  },
-  {
-   "n": "Wand-Enhancer",
-   "l": "C#",
-   "s": 5,
-   "fk": 2,
-   "d": "2026-09-11T06:52:23Z",
-   "t": "Advanced UX and interoperability extension for Wand (WeMod) app",
-   "fork": true,
-   "f": "byst4nder/Wemod-Patcher"
   },
   {
    "n": "loan-calculator",
@@ -205,16 +175,6 @@
    "f": "nsEytgXm/subagents_configs"
   },
   {
-   "n": "fmhy-sync",
-   "l": "ReScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-08-01T11:31:53Z",
-   "t": "Local-only Chromium extension for syncing FMHY starred bookmarks.",
-   "fork": false,
-   "f": ""
-  },
-  {
    "n": "OpenSearch-Dashboards",
    "l": "TypeScript",
    "s": 0,
@@ -233,16 +193,6 @@
    "t": "A high-performance, type-safe Chrome extension for quickly enabling, disabling, and grouping extensions and apps using custom profiles. This is a complete rewrite of the original Extensity extension in Rust compiled to WebAssembly (Wasm), fully compliant with modern Manifest V3 standards.",
    "fork": false,
    "f": ""
-  },
-  {
-   "n": "EmpressNfo",
-   "l": "JavaScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-05-29T02:50:14Z",
-   "t": "An index of Empress' NFO collections.",
-   "fork": true,
-   "f": "jayantchandra/EmpressNfo"
   },
   {
    "n": "essay-architect",
@@ -283,17 +233,7 @@
    "t": "A high-performance, interactive generative art sandbox built with React and Vite.",
    "fork": false,
    "f": ""
-  },
-  {
-   "n": "tms-captcha",
-   "l": "TypeScript",
-   "s": 2,
-   "fk": 0,
-   "d": "2026-02-20T12:16:34Z",
-   "t": "Browser Extension to locally solve captchas on NEPSE TMS using statistical approach.",
-   "fork": false,
-   "f": ""
   }
  ],
- "generated": "2026-11-17T00:51:42Z"
+ "generated": "2026-11-17T08:29:46Z"
 }
