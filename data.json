@@ -5,6 +5,16 @@
  ],
  "repos": [
   {
+   "n": "Frostbyte",
+   "l": "C#",
+   "s": 4,
+   "fk": 0,
+   "d": "2026-11-19T15:33:25Z",
+   "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "mumukshu-portfolio",
    "l": "TypeScript",
    "s": 1,
@@ -61,16 +71,6 @@
    "fk": 0,
    "d": "2026-11-14T13:22:15Z",
    "t": "A dark-mode-first (with light mode toggle), fully client-side web dashboard that automates the calculations and daily routine for the Efficient Trader Strategy (ATR Momentum Version) on the Nepal Stock Exchange (NEPSE).",
-   "fork": false,
-   "f": ""
-  },
-  {
-   "n": "Frostbyte",
-   "l": "C#",
-   "s": 4,
-   "fk": 0,
-   "d": "2026-11-14T08:47:07Z",
-   "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
    "fork": false,
    "f": ""
   },
@@ -235,5 +235,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-17T18:10:45Z"
+ "generated": "2026-11-19T21:58:40Z"
 }
