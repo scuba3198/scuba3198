@@ -9,7 +9,7 @@
    "l": "C#",
    "s": 4,
    "fk": 0,
-   "d": "2026-11-22T08:47:40Z",
+   "d": "2026-11-22T09:34:32Z",
    "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
    "fork": false,
    "f": ""
@@ -235,5 +235,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-22T08:54:07Z"
+ "generated": "2026-11-22T16:58:47Z"
 }
