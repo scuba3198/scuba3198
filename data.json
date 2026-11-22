@@ -5,22 +5,22 @@
  ],
  "repos": [
   {
+   "n": "Frostbyte",
+   "l": "C#",
+   "s": 4,
+   "fk": 0,
+   "d": "2026-11-22T08:47:40Z",
+   "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "pte-class-coverage",
    "l": "TypeScript",
    "s": 1,
    "fk": 0,
    "d": "2026-11-20T16:36:30Z",
    "t": "A local-first tracker for PTE Academic class coverage.",
-   "fork": false,
-   "f": ""
-  },
-  {
-   "n": "Frostbyte",
-   "l": "C#",
-   "s": 4,
-   "fk": 0,
-   "d": "2026-11-19T15:33:25Z",
-   "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
    "fork": false,
    "f": ""
   },
@@ -235,5 +235,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-20T19:15:15Z"
+ "generated": "2026-11-22T08:54:07Z"
 }
