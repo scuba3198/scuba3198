@@ -5,6 +5,16 @@
  ],
  "repos": [
   {
+   "n": "VpnAdGuardSwitch",
+   "l": "PowerShell",
+   "s": 1,
+   "fk": 0,
+   "d": "2026-11-23T10:30:31Z",
+   "t": "Stops AdGuard for Windows from killing your internet when you use Proton VPN. One-click install.",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "Frostbyte",
    "l": "C#",
    "s": 4,
@@ -235,5 +245,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-22T16:58:47Z"
+ "generated": "2026-11-23T12:21:15Z"
 }
