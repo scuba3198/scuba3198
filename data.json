@@ -5,6 +5,16 @@
  ],
  "repos": [
   {
+   "n": "mumukshu-portfolio",
+   "l": "TypeScript",
+   "s": 1,
+   "fk": 0,
+   "d": "2026-11-24T12:38:43Z",
+   "t": "This portfolio showcases professional journey, featured projects, and technical skills through a high-contrast minimalist aesthetic.",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "pte-class-coverage",
    "l": "TypeScript",
    "s": 1,
@@ -35,16 +45,6 @@
    "f": ""
   },
   {
-   "n": "mumukshu-portfolio",
-   "l": "TypeScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-11-17T14:25:18Z",
-   "t": "This portfolio showcases professional journey, featured projects, and technical skills through a high-contrast minimalist aesthetic.",
-   "fork": false,
-   "f": ""
-  },
-  {
    "n": "scuba3198.github.io",
    "l": "HTML",
    "s": 0,
@@ -61,16 +61,6 @@
    "fk": 0,
    "d": "2026-11-16T06:51:25Z",
    "t": "Tiny Windows tray utility that caps Acer laptop battery charging at 80/90/100% - no admin required",
-   "fork": false,
-   "f": ""
-  },
-  {
-   "n": "essay-architect-pro",
-   "l": "TypeScript",
-   "s": 0,
-   "fk": 0,
-   "d": "2026-11-15T07:55:54Z",
-   "t": "Essay Architect Pro is a professional-grade AI writing suite designed specifically for students aiming for the highest bands (IELTS 8.5+ / PTE 85+). It transforms the chaotic process of essay writing into a precise, architectural discipline.",
    "fork": false,
    "f": ""
   },
@@ -205,16 +195,6 @@
    "f": ""
   },
   {
-   "n": "essay-architect",
-   "l": "JavaScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-04-28T07:06:49Z",
-   "t": "Essay Architect is a modern, structured writing assistant designed to help students master the rigid structure required for high-scoring IELTS (Band 9) and PTE (90) essays.",
-   "fork": false,
-   "f": ""
-  },
-  {
    "n": "focalboard",
    "l": "TypeScript",
    "s": 0,
@@ -233,17 +213,7 @@
    "t": "A modified web browser that helps in responsive web development. A web developer's must have dev-tool.",
    "fork": true,
    "f": "responsively-org/responsively-app"
-  },
-  {
-   "n": "Geoflux",
-   "l": "TypeScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-02-22T10:39:49Z",
-   "t": "A high-performance, interactive generative art sandbox built with React and Vite.",
-   "fork": false,
-   "f": ""
   }
  ],
- "generated": "2026-11-24T10:03:56Z"
+ "generated": "2026-11-24T20:38:36Z"
 }
