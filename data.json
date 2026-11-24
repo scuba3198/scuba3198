@@ -5,6 +5,16 @@
  ],
  "repos": [
   {
+   "n": "pte-class-coverage",
+   "l": "TypeScript",
+   "s": 1,
+   "fk": 0,
+   "d": "2026-11-23T17:23:45Z",
+   "t": "A local-first tracker for PTE Academic class coverage.",
+   "fork": false,
+   "f": ""
+  },
+  {
    "n": "VpnAdGuardSwitch",
    "l": "PowerShell",
    "s": 1,
@@ -21,16 +31,6 @@
    "fk": 0,
    "d": "2026-11-22T09:34:32Z",
    "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
-   "fork": false,
-   "f": ""
-  },
-  {
-   "n": "pte-class-coverage",
-   "l": "TypeScript",
-   "s": 1,
-   "fk": 0,
-   "d": "2026-11-20T16:36:30Z",
-   "t": "A local-first tracker for PTE Academic class coverage.",
    "fork": false,
    "f": ""
   },
@@ -245,5 +245,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-23T12:21:15Z"
+ "generated": "2026-11-24T00:11:37Z"
 }
