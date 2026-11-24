@@ -9,7 +9,7 @@
    "l": "TypeScript",
    "s": 1,
    "fk": 0,
-   "d": "2026-11-23T17:23:45Z",
+   "d": "2026-11-24T03:00:30Z",
    "t": "A local-first tracker for PTE Academic class coverage.",
    "fork": false,
    "f": ""
@@ -245,5 +245,5 @@
    "f": ""
   }
  ],
- "generated": "2026-11-24T00:11:37Z"
+ "generated": "2026-11-24T10:03:56Z"
 }
