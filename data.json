@@ -37,7 +37,7 @@
   {
    "n": "Frostbyte",
    "l": "C#",
-   "s": 4,
+   "s": 5,
    "fk": 0,
    "d": "2026-11-22T09:34:32Z",
    "t": "Windows cool-mode toggle: power-scheme based CPU temperature reducer with a small GUI",
@@ -215,5 +215,5 @@
    "f": "responsively-org/responsively-app"
   }
  ],
- "generated": "2026-11-25T13:54:22Z"
+ "generated": "2026-11-27T06:54:07Z"
 }
